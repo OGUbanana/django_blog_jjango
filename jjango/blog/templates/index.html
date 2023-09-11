@@ -17,6 +17,7 @@
         {% if latest_post %}
         <div class="container">
             <div class="post-info-box">
+                {% comment %} views.py에서 latest_post = posts.latest('created_at') 정의했다고 가정 {% endcomment %}
                 <h3 class= "title">{{ latest_post.title }}</h3>
                 <p class = "content">{{ latest_post.content }}</p>
                 <button onclick="location.href='{% url 'post_detail' pk=latest_post.pk %}'" class="Read_More">Read More</button>
