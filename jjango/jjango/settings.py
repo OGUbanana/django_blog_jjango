@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -83,16 +83,22 @@ WSGI_APPLICATION = 'jjango.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
+with open('config.json', 'r') as f:
+    json_data = json.load(f)
+    db_key = json_data['POSTGRESQL_KEY']
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'blog',
-        'USER': 'postgres',
-        'PASSWORD': db_key
+        'NAME': "blog",
+        'USER': "postgres",
+        "PASSWORD" : db_key,
+        "HOST" : "localhost",
+        "PORT": "5432",
+
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
