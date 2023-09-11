@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'blog',
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -83,10 +84,11 @@ WSGI_APPLICATION = 'jjango.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
+
+
 with open('config.json', 'r') as f:
     json_data = json.load(f)
     db_key = json_data['POSTGRESQL_KEY']
-
 
 DATABASES = {
     'default': {
