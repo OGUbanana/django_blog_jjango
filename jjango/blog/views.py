@@ -57,4 +57,3 @@ def write(request):
     return render(request, 'write.html')
 
 def board(request):
-    return render(request, 'board.html')
