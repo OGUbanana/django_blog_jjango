@@ -1,11 +1,57 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/post_list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
     <title>Document</title>
 </head>
 <body>
-    첫페이지
+    <header>
+
+    </header>
+
+    <section class="first-post-box">
+        {% if latest_post %}
+        <div class="container">
+            <div class="post-info-box">
+                <h3 class= "title">{{ latest_post.title }}</h3>
+                <p class = "content">{{ latest_post.content }}</p>
+                <button onclick="location.href='{% url 'post_detail' pk=latest_post.pk %}'" class="Read_More">Read More</button>
+            </div>
+            {% if latest_post.image %}
+                <img class="thumbnail-img" src="{% static latest_post.image.url %}" alt="Latest_Post_Image">
+            {% endif %}
+        </div>
+
+    {% else %}
+        <p>최근 포스트가 없습니다.</p>
+    {% endif %}
+    </section>
+
+    <section class="post-box">
+        <div class="container">
+            {% for post in posts %}
+            <article class="card">
+                {% if post.image %}
+                    <img class="card-thumbnail-img" src="{% static post.image.url %}" alt="Post_Image">
+                {% endif %}
+                <div class="card-info-box">
+                    <p>{{ post.created_at }}</p>
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.content }}</p>
+                </div>
+
+            </article>
+        {% endfor %}
+        </div>
+
+    </section>
+    <footer class ="footer">
+        <p>&copy; 2023 jjango Blog. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
