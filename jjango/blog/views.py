@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .models import post, user
+from .models import Post,User
 
 
 # Create your views here.
@@ -11,6 +11,10 @@ def index(request):
 
 def signup(request) :
    pass
+
+
+def board(reqeust):
+    return render(request,  'board.html')
 
 # 로그인 처리
 def login(request):
@@ -56,4 +60,3 @@ def write(request):
 
     return render(request, 'write.html')
 
-def board(request):
