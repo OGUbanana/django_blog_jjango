@@ -1,25 +1,25 @@
+{% extends "header.html" %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% comment %} <link rel="stylesheet" href="{% static 'css/post_list.css' %}"> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
     <title>Document</title>
 </head>
 <body>
-    {% extends base.html %}
-    {% block %}
+
+    {% block contents %}
     <div class = "container">
         <input type="text" name="'title" placeholder="제목">
         <form method ="POST">
             <div class="conatiner">
-                    {% csrf_token %}
+                {% csrf_token %}
                 <h1> {{blog.title}} </h1>
                 <p> {{form.media}} </p>
                 <p> {{form.as_p}} </p>
-                <button class="btn btn-secondary">제출하기</button>
+                <button class="btn btn-secondary" type="submit">글 작성</button>
             </div>
         <br>
         </form>
@@ -46,6 +46,5 @@
     </section>
         
     {% endblock %}
-    
 </body>
 </html>

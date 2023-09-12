@@ -17,7 +17,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure--fx8o-5h&xep$^3m-_)n&1%ec@&n=(629n(er*-4=8#c_e_hum'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'ckeditor',
-    'ckeditor_uploader',
+    'ckeditor_uploader'
 ]
 
 
@@ -77,17 +77,22 @@ WSGI_APPLICATION = 'jjango.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow" 
 
 with open('config.json', 'r') as f:
     json_data = json.load(f)
     db_key = json_data['POSTGRESQL_KEY']
-
+    api_key = json_data['OPENAI_API_KEY']
+    secret_key = json_data['SECRET_KEY']
+    
+SECRET_KEY = secret_key
+OPENAI_API_KEY = api_key
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': "blog",
-        'USER': "postgres",
+        'USER': "blog_project_user",
         "PASSWORD" : db_key,
         "HOST" : "blog-project-db.cgoq8zivseqk.ap-northeast-2.rds.amazonaws.com",
         "PORT": "5432",

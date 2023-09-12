@@ -1,22 +1,29 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     user_pwd = models.CharField(max_length=255)
-    user_authority = models.CharField(max_length=100)
-    user_name = models.CharField(max_length=255)
+    user_name = models.CharField(max_length=10)
+    user_authority = models.BooleanField(default=False)
 
 class Post(models.Model):
-    id = models.AutoField(primary_key=True)
+    post_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='post_images/')
-    
+    post_title = models.CharField(max_length=255)
+    # post_content = models.TextField()
+    post_content = RichTextUploadingField('내용', blank=True, null=True)
+    post_topic = models.CharField(max_length=10)
+    post_created_at = models.DateTimeField(auto_now_add=True)
+    post_views = models.IntegerField(default=0)
+    # post_image = models.ImageField(upload_to="static/imgs")
+
+
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-    writer = models.CharField(max_length=255)
-
+    comment_writer = models.CharField(max_length=255)
+    comment_content = models.TextField()
+    comment_created_at = models.DateTimeField(auto_now_add=True)
+    comment_modifed_at = models.DateTimeField(auto_now_add=True)
