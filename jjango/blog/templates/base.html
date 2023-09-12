@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/reset.css'%}">
     <link rel="stylesheet" href="{% static 'css/header/header_black.css' %}">
     <link rel="stylesheet" href="{% static 'css/board/board.css'%}">
+    {% block extra_css %}
+    {% endblock %}
 </head>
+
+
 <body>
     <header>
         <div class="nav-bar">
@@ -23,18 +28,20 @@
                     <a href="">IT</a>
                 </div> 
                 <div class="nav-buttons">
-                    <button class='logout-button'>
-                        log-out
-                    </button>
-                    <button class='primary-button'>
-                        Write Now
-                    </button>
+                    {% if user.is_authenticated %}
+                     <a class="logout-button" href="{% url 'blog:logout' %}">Logout</a>
+                    {% else %}
+                    <a class="logout-button" href="{% url 'blog:login' %}">Login</a>
+                    {% endif %}
+                    <a  class='primary-button' href="{% url 'blog:create_post' %}">Write Now</a>
                 </div> 
             </div>
         </div>
     </header>
     {% block contents %}
     {% endblock %}
-    
+    <footer class ="footer">
+        <p>&copy; 2023 jjango Blog. All rights reserved.</p>
+    </footer>
 </body>
 </html>

@@ -21,16 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-with open(os.path.dirname(os.path.realpath(__file__)) + '\config.json', 'r') as f:
-    json_data = json.load(f)
-    db_key = json_data['POSTGRESQL_KEY']
-    secret_key = json_data['DJANGO_SECRET_KEY']
 
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_key
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -46,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 
@@ -83,20 +76,35 @@ WSGI_APPLICATION = 'jjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
-
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow" 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media/'
+CKEDITOR_CONFIGS={
+  'default': {
+    'toolbar': 'Full',
+    'height': 400,
+    'width': 500,
+  },
+}
 
 with open('config.json', 'r') as f:
     json_data = json.load(f)
     db_key = json_data['POSTGRESQL_KEY']
-
+    api_key = json_data['OPENAI_API_KEY']
+    secret_key = json_data['SECRET_KEY']
+    
+SECRET_KEY = secret_key
+OPENAI_API_KEY = api_key
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': "blog",
-        'USER': "postgres",
+        'USER': "blog_project_user",
         "PASSWORD" : db_key,
-        "HOST" : "localhost",
+        "HOST" : "blog-project-db.cgoq8zivseqk.ap-northeast-2.rds.amazonaws.com",
         "PORT": "5432",
 
     }

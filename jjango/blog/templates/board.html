@@ -1,12 +1,27 @@
-<!DOCTYPE html>
-{% extends "header.html" %}
+{% extends "base.html" %}
     {% block contents %}
     <section class='container'>
         <div class="box-divider">
-            <div class="big-box">\
+            <div class="big-box">
+                <h3>{{main.post_create_at}}</h3>
+                <h1>{{main.post_title}}</h1>
+                <h5>{{main.user_id}}</h5>
+                <div class="topic-box">
+                    {{main.post_topic}}
+                </div>
+                <div class="post-content">
+                    {{main.post_content}}
+                </div>
             </div>
             <div class="small-box">
-
+                <div class="post-info">
+                {% for post in sub_posts %}
+                   <div class="recommend-box">
+                        <img src="{{post.post_image}}" alt="">
+                        <p>{{post.post_title}}</p>
+                   </div> 
+                {% endfor %}
+                </div>
             </div>
         </div>
         <div class="button-box">
@@ -16,6 +31,18 @@
             </div>
             <div class="share-box">
                 <button class="share-button">공유하기</button>
+            </div>
+        </div>
+        <div class="post-box">
+            <div class="another-post-box">
+                <p>다음글</p>
+                <div class="post-name"></div>
+                <p></p>
+            </div>
+            <div class="another-post-box">
+                <p>이전글</p>
+                <div class="post-name"></div>
+                <p></p>
             </div>
         </div>
     </section>
