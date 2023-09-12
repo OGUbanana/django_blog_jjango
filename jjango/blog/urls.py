@@ -1,19 +1,22 @@
 from django.urls import path
 from . import views
-
 from django.contrib.auth import views as auth_views
+from .forms import CustomAuthForm
+
+app_name = "blog"
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthForm), name='login'),
     # path('login/', views.login, name="login"),
-    path('logout/', views.logout, name="logout"),
-    # path('write/', views.write, name="write"),
+     #path('logout/', views.logout, name="logout"),
+     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+#     path('write/', views.write, name="write"),
     path('board/', views.board, name="board"),
     path("signup/", views.signup, name="signup"),
 
     #게시글
-    path('post/create/',
+    path('write/',
           views.create_post, name='create_post'),
      path('post/modify/<int:post_id>/',
           views.modify_post, name='modify_post'),

@@ -76,9 +76,19 @@ WSGI_APPLICATION = 'jjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow" 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media/'
+CKEDITOR_CONFIGS={
+  'default': {
+    'toolbar': 'Full',
+    'height': 400,
+    'width': 500,
+  },
+}
 
 with open('config.json', 'r') as f:
     json_data = json.load(f)

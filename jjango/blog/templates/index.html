@@ -1,18 +1,17 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/post_list.css' %}">
-    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+    {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post_list.css' %}">
+    {% endblock %}
     <title>Document</title>
 </head>
 <body>
-    <header>
-
-    </header>
-
+    {% block contents %}
     <section class="first-post-box">
         {% if latest_post %}
         <div class="container">
@@ -55,9 +54,6 @@
         </div>
 
     </section>
-    <footer class ="footer">
-        <p>&copy; 2023 jjango Blog. All rights reserved.</p>
-    </footer>
-
 </body>
+{% endblock %}
 </html>

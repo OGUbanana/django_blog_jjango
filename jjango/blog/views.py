@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-
+import openai
+from django.conf import settings
+from django.http import JsonResponse
 from .models import Post,User,Comment
-from .forms import UserForm,CommentForm
-
+from .forms import UserForm,CommentForm, BlogPost
+from .forms import CustomUserForm
 # Create your views here.
 
 # 메인 화면
@@ -16,7 +18,7 @@ def index(request):
 #회원가입
 def signup(request):
     if request.method == "POST":
-        form = UserForm(request.POST)
+        form = CustomUserForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -25,11 +27,11 @@ def signup(request):
             login(request, user)  # 로그인
             return redirect('index')
     else:
-        form = UserForm()
-    return render(request, 'index.html', {'form': form})
+        form = CustomUserForm()
+    return render(request, 'signup.html', {'form': form})
 
 
-def board(reqeust):
+def board(request):
     return render(request, 'board.html')
 
 # 로그인 처리
@@ -45,7 +47,7 @@ def login(request):
                 return render(request, "index.html", {"login" : "success", "user_name" : user.user_name})
             else :
                 return render(request, "index.html", {"login": "pwd_fail"})
-        except post.DoesNotExist :
+        except Post.DoesNotExist :
             return render(request, "login.html", {"login":"user_fail"})
         
     else :
@@ -59,23 +61,58 @@ def logout(request):
 # 게시글 작성 처리
 @login_required(login_url='blog:login')
 def create_post(request):
-    if request.method == "POST" and request.FILES :
-        user_name = request.POST["user_name"]
-        title = request.POST["title"]
-        content = request.POST["content"]
-        created_at = request.POST["created_at"]
-        image = request.FILES["image"]
+    # if request.method == "POST" and request.FILES :
+    #     user_name = request.POST["user_name"]
+    #     title = request.POST["title"]
+    #     content = request.POST["content"]
+    #     created_at = request.POST["created_at"]
+    #     image = request.FILES["image"]
+    if request.method == "POST":
+        form = BlogPost(request.POST)
+        
+        # 폼 유효성 검사
+        if form.is_valid():
+            # user_name = form.cleaned_data.get("user_name", "")
+            post_title = form.cleaned_data.get("post_title", "")
+            content = form.cleaned_data.get("content", "")
+            # created_at = form.cleaned_data.get("created_at", "")
 
-        post.objects.create(
-            user_id = user_name,
-            title = title,
-            content = content,
-            created_at = created_at,
-            image = image
-        )
-        return redirect("index")
+            # GPT-3.5-turbo API 호출 및 자동완성 결과 생성
+            api_key = settings.OPENAI_API_KEY
+            
+            response = openai.ChatCompletion.create(
+                model='gpt-3.5-turbo',
+                messages=[
+                    {"role": "system", "content": f"당신은 '{post_title}'에 대한 블로그 포스트를 작성하는 도움이 되는 비서입니다."},
+                    {"role": "user", "content": f"'{post_title}'에 대한 블로그 글을 작성해주세요. 제목은 제외하고 블로그 글만 써주세요."},
+                ],
+                max_tokens=400,
+                n=1,
+                api_key=api_key  
+            )
+            
+            completion_text = response['choices'][0]['message']['content'].strip()
+            
+            last_period_index = completion_text.rfind('.')
+            
+            if last_period_index != -1:
+               completion_text = completion_text[:last_period_index+1]
+            
+           # 데이터베이스에 저장
+            # user, _created  = User.objects.get_or_create(user_name=user_name)
+            # Post.objects.create(
+            #    user_id=user.id,
+            #    title=title,
+            #    content=completion_text,  # AI가 생성한 내용을 content로 사용
+            #    created_at=created_at
+        #    )
 
-    return render(request, 'write.html')
+            return JsonResponse({'completion': completion_text})
+
+    else:  # GET 요청인 경우
+        form = BlogPost()
+
+    return render(request, 'write.html', {'form': form})
 
 #게시글 수정
 @login_required(login_url='blog:login')
@@ -149,6 +186,7 @@ def modify_comment(request, comment_id):
 #댓글 삭제
 @login_required(login_url='blog:login')
 def delete_comment(request, comment_id):
+    
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.user != comment.comment_writer:
         messages.error(request, '댓글삭제권한이 없습니다')
@@ -156,3 +194,6 @@ def delete_comment(request, comment_id):
     else:
         comment.delete()
     return redirect('board', post_id=comment.post_id)
+
+
+

@@ -101,20 +101,19 @@ body{
 
 
 .container{
-    width: 1024px;
+    width: 100%;
+    max-width: 1024px;
     margin: auto;    
     display: flex;
     gap: 38px; 
     flex-wrap: wrap; 
-
-
 }
 
 .card{
-    width: calc((100% - (2 * 38px)) / 3);
+    flex-basis: calc((100% - (2 * 38px)) / 3);
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 
 .card:hover {
@@ -180,18 +179,8 @@ a {
     transform: translate(-50%, -50%);
   }
 
-
-.footer{
-    display: flex;
-    background-color: #E7E3DA;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 200px;
-    align-items: flex-end;
-    justify-content: flex-end;
-}
-.footer p {
-    margin-right: 10px;
-    margin-bottom: 5px;
-}
+@media screen and (max-width: 768px) {
+    .card{
+       flex-basis: calc((100% - (1 * 38px)) / 2);
+    }
+ }

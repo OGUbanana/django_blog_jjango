@@ -32,7 +32,7 @@
 a:link {
   color : #f9f8f4;
 }
-a:visited {
+a:visited:not(.primary-button) {
   color : #f9f8f4;
 }
 a:hover {
