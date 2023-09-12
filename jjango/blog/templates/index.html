@@ -17,7 +17,12 @@
         {% if latest_post %}
         <div class="container">
             <div class="post-info-box">
-                {% comment %} views.py에서 latest_post = posts.latest('created_at') 정의했다고 가정 {% endcomment %}
+                {% comment %}
+                views.py에 latest_post = posts.latest('created_at')
+                urls.py에 path('post/<int:pk>/', views.board, name='post_detail')
+
+                views.py와 urls.py에 위 두 코드를 넣고 테스트. 두 파일 수정되면 코드 수정해야함.
+                {% endcomment %}
                 <h3 class= "title">{{ latest_post.title }}</h3>
                 <p class = "content">{{ latest_post.content }}</p>
                 <button onclick="location.href='{% url 'post_detail' pk=latest_post.pk %}'" class="Read_More">Read More</button>
