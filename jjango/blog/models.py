@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
@@ -13,7 +14,9 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='post_images/')
+    
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
     writer = models.CharField(max_length=255)
+

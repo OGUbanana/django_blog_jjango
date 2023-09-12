@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 
@@ -87,7 +89,7 @@ DATABASES = {
         'NAME': "blog",
         'USER': "postgres",
         "PASSWORD" : db_key,
-        "HOST" : "localhost",
+        "HOST" : "blog-project-db.cgoq8zivseqk.ap-northeast-2.rds.amazonaws.com",
         "PORT": "5432",
 
     }

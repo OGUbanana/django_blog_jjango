@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% comment %} {% extends header.html %}
+    {% block %} {% endcomment %}
+    <div class = "container">
+        <input type="text" name="'title" placeholder="제목">
+        <form method ="POST">
+            <div class="conatiner">
+                    {% csrf_token %}
+                <h1> {{blog.title}} </h1>
+                <p> {{form.media}} </p>
+                <p> {{form.as_p}} </p>
+                <button class="btn btn-secondary">제출하기</button>
+            </div>
+        <br>
+        </form>
+    </div>
+    <section class="box1">
+        <button type="submit" class="" ><img src="">AI 글 자동완성</button> 
+    </section>
+
+    <section class="box2">
+        <h4 class="title">topic</h4>
+        <input type="radio" name="radio" value="">일상<br>
+        <input type="radio" name="radio" value="">요리<br>
+        <input type="radio" name="radio" value="">여행<br>
+        <input type="radio" name="radio" value="">영화<br>
+        <input type="radio" name="radio" value="">IT/전자기기<br>
+    </section>
+
+    <section class="box3">
+        <h4 class="title" name="title" alt="">upload info</h4>
+        <p class="" name="" alt="">상태 : </p>
+        <button class="" name="" alt="">이미지 업로드</botton>
+        <button class="" name="" alt="">임시저장</button>
+        <button class="" name="" alt="">글 작성</button>
+    </section>
+        
+    {% comment %} {% endblock %} {% endcomment %}
+    
+</body>
+</html>
