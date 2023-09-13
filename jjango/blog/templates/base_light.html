@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/reset.css'%}">
-    <link rel="stylesheet" href="{% static 'css/header/header_black.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header/header_light.css' %}">
     <link rel="stylesheet" href="{% static 'css/board/board.css'%}">
     {% block extra_css %}
     {% endblock %}
@@ -18,7 +18,7 @@
         <div class="nav-bar">
             <div class="nav-container">
                 <div class="nav-img">
-                    <img src="{% static 'header/blog_img_white.svg' %}" alt="" onclick="location.href='{%url 'blog:index'%}'">
+                    <img src="{% static 'header/blog_img_black.svg' %}" alt="" onclick="location.href='{%url 'blog:index'%}'">
                 </div>
                 <div class="nav-topics">
                     <a href="">일상</a>
@@ -33,7 +33,7 @@
                     {% else %}
                     <a class="logout-button" href="{% url 'blog:login' %}">Login</a>
                     {% endif %}
-                    <a  class='primary-button' href="{% url 'blog:create_post' %}">Write Now</a>
+                    <button  class='primary-button' href="{% url 'blog:create_post' %}">Write Now</button>
                 </div> 
             </div>
         </div>
