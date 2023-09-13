@@ -17,17 +17,17 @@
         <div class="container">
             <div class="post-info-box">
                 {% comment %}
-                views.py에 latest_post = posts.latest('created_at')
+                views.py에 latest_post = Post.objects.latest('post_created_at')
                 urls.py에 path('post/<int:pk>/', views.board, name='post_detail')
 
                 views.py와 urls.py에 위 두 코드를 넣고 테스트. 두 파일 수정되면 코드 수정해야함.
                 {% endcomment %}
-                <h3 class= "title">{{ latest_post.title }}</h3>
-                <p class = "content">{{ latest_post.content }}</p>
-                <button onclick="location.href='{% url 'post_detail' pk=latest_post.pk %}'" class="Read_More">Read More</button>
+                <h3 class= "title">{{ latest_post.post_title }}</h3>
+                <p class = "content">{{ latest_post.post_content }}</p>
+                <button onclick="location.href='{% url 'blog:post_detail' pk=latest_post.pk %}'" class="Read_More">Read More</button>
             </div>
             {% if latest_post.image %}
-                <img class="thumbnail-img" src="{% static latest_post.image.url %}" alt="Latest_Post_Image">
+                <img class="thumbnail-img" src="{% static latest_post.post_image.url %}" alt="Latest_Post_Image">
             {% endif %}
         </div>
 
@@ -44,9 +44,9 @@
                     <img class="card-thumbnail-img" src="{% static post.image.url %}" alt="Post_Image">
                 {% endif %}
                 <div class="card-info-box">
-                    <p>{{ post.created_at }}</p>
-                    <h3>{{ post.title }}</h3>
-                    <p>{{ post.content }}</p>
+                    <p>{{ post.post_created_at }}</p>
+                    <h3>{{ post.post_title }}</h3>
+                    <p>{{ post.post_content }}</p>
                 </div>
 
             </article>
