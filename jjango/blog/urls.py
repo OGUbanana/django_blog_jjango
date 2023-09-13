@@ -17,12 +17,8 @@ router.register(r'comments', CommentViewSet)
 urlpatterns = [
     path('', views.index, name="index"),
     path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthForm), name='login'),
-    # path('login/', views.login, name="login"),
-     #path('logout/', views.logout, name="logout"),
      path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-#     path('write/', views.write, name="write"),
     path('board/', views.board, name="board"),
-    path("signup/", views.signup, name="signup"),
 
     #게시글
     path('write/',
@@ -39,5 +35,6 @@ urlpatterns = [
 
     path('api/', include(router.urls)),
     path('board/<int:post_id>/', views.board, name='post_detail')
+
 
 ]
