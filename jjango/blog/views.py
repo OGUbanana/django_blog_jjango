@@ -30,7 +30,11 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 # 메인 화면
 def index(request):
-    return render(request, 'index.html')
+    latest_post = Post.objects.latest('post_created_at')
+    posts = Post.objects.all()
+    context = {'latest_post': latest_post, 'posts': posts}
+    return render(request, 'index.html', context)
+
 
 #회원가입
 def signup(request):
