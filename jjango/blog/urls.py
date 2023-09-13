@@ -1,9 +1,18 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework.routers import DefaultRouter
+from .views import UserViewSet, PostViewSet, CommentViewSet
 from django.contrib.auth import views as auth_views
 from .forms import CustomAuthForm
 
 app_name = "blog"
+
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'posts', PostViewSet)
+router.register(r'comments', CommentViewSet)
+
 
 urlpatterns = [
     path('', views.index, name="index"),
@@ -27,5 +36,7 @@ urlpatterns = [
     path('comment/create/post/<int:post_id>/', views.create_comment, name='create_comment'),
     path('comment/modify/post/<int:comment_id>/', views.modify_comment, name='modify_comment'),
     path('comment/delete/post/<int:comment_id>/', views.delete_comment, name='delete_comment'),
+
+    path('api/', include(router.urls)),
 
 ]

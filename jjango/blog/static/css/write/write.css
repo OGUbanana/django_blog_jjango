@@ -17,6 +17,9 @@
     font-weight: 700;
     line-height: normal;
 }
+.container p:nth-of-type(3) label {
+    display: none;
+}
 
 label {
     font-size: 12px;

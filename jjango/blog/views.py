@@ -7,9 +7,26 @@ import openai
 from django.conf import settings
 from django.http import JsonResponse
 from .models import Post,User,Comment
-from .forms import UserForm,CommentForm, BlogPost
-from .forms import CustomUserForm
+from .forms import CommentForm, BlogPost, CustomUserForm, CustomAuthForm
+from rest_framework import viewsets
+from .serializers import PostSerializer, UserSerializer, CommentSerializer
+
 # Create your views here.
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+
 
 # 메인 화면
 def index(request):
@@ -35,23 +52,42 @@ def board(request):
     return render(request, 'board.html')
 
 # 로그인 처리
-def login(request):
-    if request.method == "POST":
-        input_id = request.POST["user_id"]
-        input_pwd = request.POST["user_pwd"]
+# def login(request):
+#     if request.method == "POST":
+#         input_id = request.POST["user_id"]
+#         input_pwd = request.POST["user_pwd"]
 
-        try :
-            user = user.objects.get(user_id=input_id)
+#         try :
+#             user = user.objects.get(user_id=input_id)
 
-            if user.user_pwd == input_pwd:
-                return render(request, "index.html", {"login" : "success", "user_name" : user.user_name})
-            else :
-                return render(request, "index.html", {"login": "pwd_fail"})
-        except Post.DoesNotExist :
-            return render(request, "login.html", {"login":"user_fail"})
+#             if user.user_pwd == input_pwd:
+#                 return render(request, "index.html", {"login" : "success", "user_name" : user.user_name})
+#             else :
+#                 return render(request, "index.html", {"login": "pwd_fail"})
+#         except Post.DoesNotExist :
+#             return render(request, "login.html", {"login":"user_fail"})
         
-    else :
-        return render(request, "login.html")
+#     else :
+#         return render(request, "login.html")
+    
+def login(request):
+    if request.user.is_authenticated:
+        return redirect('blog:index')
+    else:
+        form = CustomAuthForm(data=request.POST or None)
+        if request.method == "POST":
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('blog:index')  # 슈퍼유저와 일반 사용자 모두 동일한 페이지로 리다이렉션
+        return render(request, 'login.html', {'form': form})
+
+
+
+
         
 # 로그아웃 처리
 def logout(request):
