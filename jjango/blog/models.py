@@ -1,12 +1,7 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from ckeditor.fields import RichTextField
-
-class User(models.Model):
-    user_id = models.AutoField(primary_key=True)
-    user_pwd = models.CharField(max_length=255)
-    user_name = models.CharField(max_length=10)
-    user_authority = models.BooleanField(default=False)
+from django.contrib.auth.models import User
 
 class Post(models.Model):
     post_id = models.AutoField(primary_key=True)
@@ -17,7 +12,6 @@ class Post(models.Model):
     post_topic = models.CharField(max_length=10)
     post_created_at = models.DateTimeField(auto_now_add=True)
     post_views = models.IntegerField(default=0)
-    # post_image = models.ImageField(upload_to="static/imgs")
 
 
 class Comment(models.Model):
