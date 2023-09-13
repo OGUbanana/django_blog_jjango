@@ -1,12 +1,8 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from ckeditor.fields import RichTextField
+from django.contrib.auth.models import User
 
-class User(models.Model):
-    user_id = models.AutoField(primary_key=True)
-    user_pwd = models.CharField(max_length=255)
-    user_name = models.CharField(max_length=10)
-    user_authority = models.BooleanField(default=False)
 
 class Post(models.Model):
     post_id = models.AutoField(primary_key=True)
