@@ -52,8 +52,11 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-def board(request):
-    return render(request, 'board.html')
+def board(request,post_id):
+    post = Post.objects.get(pk=post_id)
+    sub_posts = Post.objects.filter(post_topic=post.post_topic)
+    context = {'post': post, 'sub_posts': sub_posts}
+    return render(request, 'board.html', context)
 
 # 로그인 처리
 # def login(request):
