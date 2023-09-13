@@ -23,30 +23,42 @@
                 <h1> {{blog.title}} </h1>
                 <p> {{form.media}} </p>
                 <p> {{form.as_p}} </p>
-                <a class="save-button" href="{% url 'blog:board' %}">글 작성</a>
             </div>
         <br>
-        <div class="box">
-            <section class="box1">
-                <button type="submit" class="auto" ><img src="">AI 글 자동완성 (누르고 20초동안 기다려주세요!) </button> 
-            </section>
-            <section class="box2">
-                <h4 class="title">topic</h4>
-                <input type="radio" name="radio" value="">일상<br>
-                <input type="radio" name="radio" value="">요리<br>
-                <input type="radio" name="radio" value="">여행<br>
-                <input type="radio" name="radio" value="">영화<br>
-                <input type="radio" name="radio" value="">IT/전자기기<br>
-            </section>
+        <section class="box1">
+            <div class="box">
+                <button type="submit" class="auto">
+                    <img src="{% static 'imgs/AI_logo.png'%}">
+                    <h4 class="title" style="margin-left:5px;">AI글 자동완성</h4>
+                </button> 
+            </div>
+            <div class="box">
+                <h4 class="title">TOPIC</h4>
+                <div class="box-topic">
+                    <input type="radio" name="radio" value="일상" id="daily">
+                    <label for="daily">일상</label><br>
+                    <input type="radio" name="radio" value="요리" id="cook">
+                    <label for="cook">요리</label><br>
+                    <input type="radio" name="radio" value="여행" id="trip">
+                    <label for="trip">여행</label><br>
+                    <input type="radio" name="radio" value="영화" id="movie">
+                    <label for="movie">영화</label><br>
+                    <input type="radio" name="radio" value="IT/전자기기" id="it/electronics">
+                    <label for="it/electronics">IT/전자기기</label>
+                </div>
+            </div>
         
-            <section class="box3">
-                <h4 class="title" name="title" alt="">upload info</h4>
+            <div class="box">
+                <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
                 <p class="" name="" alt="">상태 : </p>
-                <button class="" name="" alt="">이미지 업로드</botton>
-                <button class="" name="" alt="">임시저장</button>
-            </section>
-        </div>
-            
+                <button class="" name="" alt="">이미지 업로드</button>
+                <div class="submit-box">
+                    <button class="temporary-button" name="" alt="">임시저장</button>
+                    <button class="save-button" onclick="href'{%url 'blog:board'%}'">글 작성</button>
+                    {% comment %} <a class="save-button" href="{% url 'blog:board' %}">글 작성</a> {% endcomment %}
+                </div>
+            </div>
+        </section>
         </form>
         
     </div>
