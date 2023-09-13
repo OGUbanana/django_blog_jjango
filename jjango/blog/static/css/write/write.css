@@ -119,10 +119,32 @@ p label {
 }
 
 .save-button {
+.submit-box {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.temporary-button {
+    display: flex;
+    width: 80px;
+    padding: 4px 17px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 3px;
+    border: 1px solid #1E1E1E;
+}
+
+.save-button {
     padding: 4px 17px;
     border: none;
     background-color: #1e1e1e;
     color: #fff;
+    width: 80px;
+    text-align: center;
+    border-radius: 3px;
     width: 80px;
     text-align: center;
     border-radius: 3px;
