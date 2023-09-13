@@ -38,5 +38,6 @@ urlpatterns = [
     path('comment/delete/post/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 
     path('api/', include(router.urls)),
+    path('post/<int:pk>/', views.board, name='post_detail')
 
 ]
