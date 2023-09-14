@@ -31,24 +31,31 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 # 메인 화면
+# 메인 화면
 def index(request):
     # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
-    try:
-        latest_post = Post.objects.latest('post_created_at')
-    except ObjectDoesNotExist:
-        latest_post = None
+
+    # try:
+    #     latest_post = Post.objects.latest('post_created_at')
+    # except ObjectDoesNotExist:
+    #     latest_post = None
 
     # 최다 조회수 가져오기
-    most_viewed = Post.objects.aggregate(most_view = Max('post_views'))
-    print(most_viewed)
-    most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
+    # most_viewed = Post.objects.aggregate(most_view = Max('post_views'))
+    # most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
     
     # posts = Post.objects.all()
     posts = Post.objects.all().order_by('-post_views')  # 조회수 순으로 정렬
-    print(posts)
-
+    if posts:
+        most_viewed = posts[0]
+    else:
+        most_viewed = []
+    if len(posts) > 1:
+        posts = posts[1:]
+    else:
+        posts = []
     # context = {'latest_post': latest_post, 'posts': posts}
-    context = {'latest_post': most_viewed_post[0], 'posts': posts}
+    context = {'latest_post': most_viewed, 'posts': posts}
     return render(request, 'index.html', context)
 
 def topic_post(request, topic=None) :
@@ -68,7 +75,6 @@ def board(request,post_id):
     post = Post.objects.get(pk=post_id)
     post.post_views += 1
     post.save()
-    
     sub_posts = Post.objects.filter(post_topic=post.post_topic)
     context = {'post': post, 'sub_posts': sub_posts}
     return render(request, 'board.html', context)
