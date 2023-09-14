@@ -1,5 +1,5 @@
 {
-    "POSTGRESQL_KEY" : "1234",
-    "OPENAI_API_KEY" : "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",
-    "SECRET_KEY" : "django-insecure--fx8o-5h&xep$^3m-)n&1%ec@&n=(629n(er*-4=8#c_e_hum"
+    "POSTGRESQL_KEY" : "",
+    "OPENAI_API_KEY" : "",
+    "SECRET_KEY" : ""
 }
