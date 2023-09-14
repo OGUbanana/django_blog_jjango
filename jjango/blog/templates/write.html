@@ -51,6 +51,7 @@
             
                 <div class="box">
                     <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
+                    <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
                     <p class="" name="" alt="">상태 : </p>
                     <p>{{form.post_image}}</p>
                     <div class="submit-box">
@@ -63,7 +64,7 @@
         </form>
         
     </div>
-    <script src="{% static 'js/ai.js' %}"></script>
+    <script src="{% static 'js/write.js' %}"></script>
     {% endblock %}
 </body>
 </html>
