@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +33,7 @@
     <section class="post-box">
         <div class="container">
             {% for post in posts %}
-            <article class="card">
+            <article class="card" onclick="location.href='board/{{post.post_id}}'">
                 {% if post.image %}
                     <img class="card-thumbnail-img" src="{% static post.image.url %}" alt="Post_Image">
                 {% endif %}
