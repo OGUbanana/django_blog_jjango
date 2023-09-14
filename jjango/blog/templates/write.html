@@ -18,6 +18,7 @@
     {% block contents %}
     <div class = "container">
         <form method ="POST" id="write-form" action="{% url 'blog:create_post' %}" enctype="multipart/form-data">
+
             <div class="conatiner">
                 {% csrf_token %}
                 <h1> {{blog.title}} </h1>
