@@ -4,6 +4,8 @@ from rest_framework.routers import DefaultRouter
 from .views import UserViewSet, PostViewSet, CommentViewSet
 from django.contrib.auth import views as auth_views
 from .forms import CustomAuthForm
+from django.conf.urls.static import static
+from django.conf import settings
 
 app_name = "blog"
 
@@ -38,3 +40,5 @@ urlpatterns = [
 
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

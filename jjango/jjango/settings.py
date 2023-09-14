@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'jjango.wsgi.application'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow" 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media/'
 CKEDITOR_CONFIGS={
   'default': {
     'toolbar': 'Full',
@@ -151,6 +151,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

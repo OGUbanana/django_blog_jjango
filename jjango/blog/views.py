@@ -99,20 +99,20 @@ def create_post(request):
             return JsonResponse({'completion': completion_text})
 
         else:
-           form = BlogPost(request.POST)
-           if form.is_valid():
-              content= request.POST.get("post_content")
-              contents=html.unescape(content)
-              contents=re.sub(r'<.*?>', '',  contents)
-              new_post = Post.objects.create(
-                 user_id=request.user,
-                 post_title=request.POST.get("post_title"),
-                 post_content=contents, 
-                 post_topic=request.POST.get("post_topic"),
-                 post_image =request.POST.get("post_image")
-             )
-
-              return redirect('blog:post_detail', post_id=new_post.post_id)
+            form = BlogPost(request.POST, request.FILES)
+            if form.is_valid():
+                content= request.POST.get("post_content")
+                contents=html.unescape(content)
+                contents=re.sub(r'<.*?>', '',  contents)
+                new_post = Post.objects.create(
+                    user_id=request.user,
+                    post_title=request.POST.get("post_title"),
+                    post_content=contents, 
+                    post_topic=request.POST.get("post_topic"),
+                    post_image =request.FILES.get("post_image")
+                )
+                print(request.FILES)
+                return redirect('blog:post_detail', post_id=new_post.post_id)
 
     else:  # GET 요청인 경우
         form = BlogPost()
