@@ -1,6 +1,5 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
-from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 
 
@@ -8,12 +7,13 @@ class Post(models.Model):
     post_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     post_title = models.CharField(max_length=255)
-    # post_content = models.TextField()
     post_content = RichTextUploadingField('내용', blank=True, null=True)
     post_topic = models.CharField(max_length=10)
+    post_publish = models.CharField(max_length=1, default='Y')
     post_created_at = models.DateTimeField(auto_now_add=True)
     post_views = models.IntegerField(default=0)
-    # post_image = models.ImageField(upload_to="static/imgs")
+    post_image = models.ImageField(null=True, upload_to="", blank=True)
+
 
 
 class Comment(models.Model):
