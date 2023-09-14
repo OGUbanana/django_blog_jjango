@@ -18,10 +18,11 @@
                 <div class="post-info-box">
                     <h3 class= "title">{{ latest_post.post_title }}</h3>
                     <p class = "content">{{ latest_post.post_content }}</p>
+                    {% comment %} <button onclick="location.href='{% url 'blog:post_detail' post_id=latest_post.pk %}'" class="Read_More">Read More</button> {% endcomment %}
                     <button onclick="location.href='{% url 'blog:post_detail' post_id=latest_post.pk %}'" class="Read_More">Read More</button>
                 </div>
                 {% if latest_post.image %}
-                    <img class="thumbnail-img" src="{% static latest_post.post_image.url %}" alt="Latest_Post_Image">
+                    <img class="thumbnail-img" src="{{latest_post.post_image.url}}" alt="Latest_Post_Image">
                 {% endif %}
             </div>
 
