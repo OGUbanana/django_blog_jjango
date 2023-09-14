@@ -27,6 +27,9 @@ urlpatterns = [
           views.modify_post, name='modify_post'),
      path('post/delete/<int:post_id>/',
           views.delete_post, name='delete_post'),   
+
+     # 토픽별 분류 - 아직 진행중(23.09.14)
+     path('post_list/<strLtopic>/', views.topic_post, name='topic_post'),
     
     #댓글
     path('comment/create/post/<int:post_id>/', views.create_comment, name='create_comment'),
