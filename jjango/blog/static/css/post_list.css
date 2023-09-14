@@ -1,18 +1,18 @@
-*{
+* {
     font-family: 'Pretendard', sans-serif;
 }
 
-body{
+body {
     background-color: #f9f8f4;
 }
 
 .post-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: auto;
-  margin-top: 104px;
-  margin-bottom: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    margin-top: 104px;
+    margin-bottom: 200px;
 }
 
 /* 상단박스 */
@@ -24,52 +24,89 @@ body{
     display: flex;
 }
 
-.first-post-box h3{
+.first-post-box h3 {
     font-size: 48px;
     font-weight: 700;
     margin: 0;
 }
 
-.first-post-box p{
+.first-post-box p {
     font-weight: 300;
     margin-bottom: 10px;
 }
 
-.first-post-box .container{
+.first-post-box .container {
     margin-left: 250px;
     display: flex;
     height: 415px;
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 104px;
 }
 
-.first-post-box .container .post-info-box{
+.first-post-box .container .post-info-box {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-top: -60px
+    margin-top: -30px;
     gap: 8px;
     position: absolute;
     color: #fff;
     z-index: 1;
     height: auto;
-    width: 40%;
+    width: 50%;
     line-height: 2;
 }
 
-.first-post-box button{
+.post-info-box h3 {
+    color: #FFF;
+    font-family: Pretendard;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.post-info-box p {
+    color: #FFF;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    height: 9.6em;
+    line-height: 25px;
+    /* 192.308% */
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: 1.2;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+}
+
+.first-post-box button {
     background-color: #3a3a3a;
-    color: #f9f8f4;
+    color: #FFF;
+    font-family: Pretendard;
     border-radius: 2px;
     padding: 8px 18px;
     width: fit-content;
     outline: none;
     border: 0;
-    font-size: 14px
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25px;
+
+    /* 192.308% */
 }
 
-.first-post-box button:hover{
+.first-post-box button:hover {
     background-color: #474747;
     transition: transform 0.8s;
 }
@@ -82,12 +119,12 @@ body{
     margin-left: 250px
 }
 
-.first-post-box .container .thumbnail-img img{
+.first-post-box .container .thumbnail-img img {
     object-fit: cover;
     min-width: 600px;
     min-height: -webkit-fill-available;
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -95,21 +132,21 @@ body{
 /* 하단박스 */
 .post-box {
     display: block;
-    padding: 54px 0px;
+    padding: 20px 0px;
 }
 
 
 
-.container{
+.container {
     width: 100%;
     max-width: 1024px;
-    margin: auto;    
+    margin: auto;
     display: flex;
-    gap: 38px; 
-    flex-wrap: wrap; 
+    gap: 38px;
+    flex-wrap: wrap;
 }
 
-.card{
+.card {
     flex-basis: calc((100% - (2 * 38px)) / 3);
     flex-grow: 1;
     display: flex;
@@ -117,49 +154,53 @@ body{
 }
 
 .card:hover {
-    transform: scale(1.01); /* Slightly scale the card */
-    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1); /* Add shadow */
-    background-color: #f5f5f5; /* Change background color */
+    transform: scale(1.01);
+    /* Slightly scale the card */
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+    /* Add shadow */
+    background-color: #f5f5f5;
+    /* Change background color */
     transition: transform 0.8s, box-shadow 0.3s, background-color 0.3s;
 }
 
 
 .card-info-box {
-  gap: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  height: 160px;
-  color: #1e1e1e;
-  font-family: 'Pretendard', sans-serif;
+    gap: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 160px;
+    color: #1e1e1e;
+    font-family: 'Pretendard', sans-serif;
 }
 
 
 h3 {
     font-family: 'Pretendard', sans-serif;
-  font-size: 20px;
-  margin-bottom: 8px;
+    font-size: 20px;
+    margin-bottom: 8px;
 }
-.card-info-box h3{
+
+.card-info-box h3 {
     font-size: 20px;
     font-weight: 700;
 }
 
 .card-info-box p {
-  font-size: 14px;
-  margin-bottom: 8px;
+    font-size: 14px;
+    margin-bottom: 8px;
 }
 
 .sub-info {
-  color: #7c7c7c;
-  display: flex;
-  gap: 20px;
-  font-size: 15px;
+    color: #7c7c7c;
+    display: flex;
+    gap: 20px;
+    font-size: 15px;
 }
 
 a {
-  text-decoration: none;
-  color: #111;
+    text-decoration: none;
+    color: #111;
 }
 
 .card-thumbnail-img {
@@ -167,9 +208,9 @@ a {
     height: 220px;
     overflow: hidden;
     position: relative;
-  }
-  
-  .card-thumbnail-img img {
+}
+
+.card-thumbnail-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -177,10 +218,10 @@ a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+}
 
 @media screen and (max-width: 768px) {
-    .card{
-       flex-basis: calc((100% - (1 * 38px)) / 2);
+    .card {
+        flex-basis: calc((100% - (1 * 38px)) / 2);
     }
- }
+}
