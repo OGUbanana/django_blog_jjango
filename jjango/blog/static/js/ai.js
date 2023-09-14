@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 fetch('/write/', {
                     method: 'POST',
                     body: formData,
-                    headers: {'Accept': 'application/json'}
+                    headers: {'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest'}
                 })
                 .then(function(response) {
                     if (!response.ok) {throw new Error('Network response was not ok');}
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(function(data) {
                     // CKEditor 인스턴스 가져오기
-                    var editorInstanceName = 'id_post_content';  // 여기에 실제 CKEditor 인스턴스 이름을 넣어주세요.
+                    var editorInstanceName = 'id_post_content';
                     
                     // 자동완성 결과를 CKEditor 입력 부분에 출력
                     if (CKEDITOR.instances[editorInstanceName]) {

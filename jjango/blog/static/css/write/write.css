@@ -17,6 +17,7 @@
     font-weight: 700;
     line-height: normal;
 }
+
 .container p:nth-of-type(3) label {
     display: none;
 }
@@ -55,7 +56,8 @@ form {
 #id_post_title {
     border: 1px solid #dbdbdb;
     padding: 11px 16px;
-    font-size: 16px;
+    font-size: 15px;
+    width: 460px;
 }
 
 h2 {
@@ -66,6 +68,10 @@ h2 {
 
 p {
     font-size: 13px;
+}
+
+p label {
+    display: none;
 }
 
 .button-line {
@@ -113,10 +119,32 @@ p {
 }
 
 .save-button {
+.submit-box {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.temporary-button {
+    display: flex;
+    width: 80px;
+    padding: 4px 17px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 3px;
+    border: 1px solid #1E1E1E;
+}
+
+.save-button {
     padding: 4px 17px;
     border: none;
     background-color: #1e1e1e;
     color: #fff;
+    width: 80px;
+    text-align: center;
+    border-radius: 3px;
     width: 80px;
     text-align: center;
     border-radius: 3px;
@@ -170,4 +198,8 @@ button {
     padding: 16px;
     align-items: center;
     justify-content: space-between;
+}
+
+#cke_id_post_content {
+    margin-top: 20px;
 }

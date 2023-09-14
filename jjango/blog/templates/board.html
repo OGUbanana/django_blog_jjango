@@ -1,4 +1,12 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 확인</title>
+</head>
+<body>
+    {% extends "base_light.html" %}
     {% block contents %}
     <section class='container'>
         <div class="box-divider">
@@ -14,6 +22,7 @@
                 </div>
             </div>
             <div class="small-box">
+                <p class="small-title">Other posts<br>you may like</p>
                 <div class="post-info">
                 {% for post in sub_posts %}
                    <div class="recommend-box">
@@ -24,6 +33,8 @@
                 </div>
             </div>
         </div>
+    </section>
+    <section class="list-box">
         <div class="button-box">
             <div class="edit-delete-box">
                 <button class="edit-button">수정하기</button>
@@ -33,6 +44,8 @@
                 <button class="share-button">공유하기</button>
             </div>
         </div>
+    </section>
+    <section class='post-list'>
         <div class="post-box">
             <div class="another-post-box">
                 <p>다음글</p>
@@ -43,7 +56,12 @@
                 <p>이전글</p>
                 <div class="post-name"></div>
                 <p></p>
+                </div>
             </div>
         </div>
     </section>
     {% endblock %}
+    
+</body>
+</html>
+
