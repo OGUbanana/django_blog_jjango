@@ -17,7 +17,8 @@
 
     {% block contents %}
     <div class = "container">
-        <form method ="POST" id="write-form" action="{% url 'blog:create_post' %}">
+        <form method ="POST" id="write-form" action="{% url 'blog:create_post' %}" enctype="multipart/form-data">
+
             <div class="conatiner">
                 {% csrf_token %}
                 <h1> {{blog.title}} </h1>
@@ -51,8 +52,8 @@
                 <div class="box">
                     <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
                     <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
-                    <input type="file" name="file" id="imageUpload" style="display:none;">
-                    <button type="button" class="button-line" onclick="document.getElementById('imageUpload').click();">이미지 업로드</button>
+                    <p class="" name="" alt="">상태 : </p>
+                    <p>{{form.post_image}}</p>
                     <div class="submit-box">
                         <button class="temporary-button" name="" alt="">임시저장</button>
                         <button class="save-button" type="submit">글 작성</button>

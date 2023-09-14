@@ -25,6 +25,14 @@
   margin: auto;
 }
 
+.nav-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2em;
+}
+
 a:link {
   color: #F9F8F4;
 }
