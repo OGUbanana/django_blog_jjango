@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             socket.onmessage = function(e) {
                 var data = JSON.parse(e.data);
-                console.log(data.content)
                 var editorInstanceName = 'id_post_content';
                 
                 if (CKEDITOR.instances[editorInstanceName]) {

@@ -14,8 +14,7 @@ class AutoWriteConsumer(AsyncWebsocketConsumer):
                 try:
                     message_content = response['choices'][0]['delta']
                     json_message = json.dumps(message_content, ensure_ascii=False)
-                    print(json_message)
-                    await asyncio.sleep(0.1)
+                    await asyncio.sleep(0.05)
                     await self.send(text_data=json_message)
                 except Exception :
                     print('생성 완료')
