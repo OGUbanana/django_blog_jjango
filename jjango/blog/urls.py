@@ -20,6 +20,7 @@ urlpatterns = [
      path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('board/', views.board, name="board"),
 
+
     #게시글
     path('write/',
           views.create_post, name='create_post'),

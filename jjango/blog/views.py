@@ -7,6 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import openai
 import html
 import re
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
 from django.http import JsonResponse
 from .models import Post,User,Comment
@@ -38,6 +40,7 @@ def index(request):
 
     posts = Post.objects.all()
     context = {'latest_post': latest_post, 'posts': posts}
+    
     return render(request, 'index.html', context)
 
 def board(request,post_id):
@@ -69,49 +72,40 @@ def logout(request):
 def autocomplete(post_title):
     api_key = settings.OPENAI_API_KEY
                 
-    response = openai.ChatCompletion.create(
+    response_generator = openai.ChatCompletion.create(
         model='gpt-3.5-turbo',
         messages=[
             {"role": "system", "content": f"당신은 '{post_title}'에 대한 블로그 포스트를 작성에 도움을 주는 비서입니다."},
-            {"role": "user", "content": f"'{post_title}'에 대한 블로그 글을 작성해주세요. 제목은 제외하고 블로그 글만 써주세요."},
+            {"role": "user", "content": f"'{post_title}'에 대한 블로그 글을 작성해주세요. 제목은 제외하고 블로그 글만 써주세요. 200자 이내로만 작성하고 문장은 완성형."},
         ],
+        stream=True,
         max_tokens=400,
         n=1,
         api_key=api_key  
-    )
-                
-    completion_text = response['choices'][0]['message']['content'].strip()
-    last_period_index = completion_text.rfind('.')
-    
-    if last_period_index != -1:
-       completion_text = completion_text[:last_period_index+1]
+    )   
+    return response_generator
 
-    return completion_text
+
 
 
 # 게시글 작성 처리
+
 @login_required(login_url='blog:login')
 def create_post(request):
     if request.method == "POST":
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            post_title = request.POST.get("post_title", "")
-            completion_text = autocomplete(post_title)
-            return JsonResponse({'completion': completion_text})
+        form = BlogPost(request.POST)
+        if form.is_valid():
+            content= request.POST.get("post_content")
+            contents=html.unescape(content)
+            contents=re.sub(r'<.*?>', '',  contents)
+            new_post = Post.objects.create(
+                user_id=request.user,
+                post_title=request.POST.get("post_title"),
+                post_content=contents, 
+                post_topic=request.POST.get("post_topic")
+            )
 
-        else:
-           form = BlogPost(request.POST)
-           if form.is_valid():
-              content= request.POST.get("post_content")
-              contents=html.unescape(content)
-              contents=re.sub(r'<.*?>', '',  contents)
-              new_post = Post.objects.create(
-                 user_id=request.user,
-                 post_title=request.POST.get("post_title"),
-                 post_content=contents, 
-                 post_topic=request.POST.get("post_topic")
-             )
-
-              return redirect('blog:post_detail', post_id=new_post.post_id)
+            return redirect('blog:post_detail', post_id=new_post.post_id)
 
     else:  # GET 요청인 경우
         form = BlogPost()
@@ -202,4 +196,4 @@ def delete_comment(request, comment_id):
     return redirect('board', post_id=comment.post_id)
 
 
-
+# 이미지 업로드

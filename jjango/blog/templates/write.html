@@ -50,8 +50,9 @@
             
                 <div class="box">
                     <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
-                    <p class="" name="" alt="">상태 : </p>
-                    <button class="" name="" alt="">이미지 업로드</button>
+                    <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
+                    <input type="file" name="file" id="imageUpload" style="display:none;">
+                    <button type="button" class="button-line" onclick="document.getElementById('imageUpload').click();">이미지 업로드</button>
                     <div class="submit-box">
                         <button class="temporary-button" name="" alt="">임시저장</button>
                         <button class="save-button" type="submit">글 작성</button>
@@ -62,7 +63,7 @@
         </form>
         
     </div>
-    <script src="{% static 'js/ai.js' %}"></script>
+    <script src="{% static 'js/write.js' %}"></script>
     {% endblock %}
 </body>
 </html>
