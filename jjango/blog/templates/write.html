@@ -17,7 +17,8 @@
 
     {% block contents %}
     <div class = "container">
-        <form method ="POST" id="write-form" action="{% url 'blog:create_post' %}">
+        <form method ="POST" id="write-form" action="{% url 'blog:create_post' %}" enctype="multipart/form-data">
+
             <div class="conatiner">
                 {% csrf_token %}
                 <h1> {{blog.title}} </h1>
@@ -51,7 +52,7 @@
                 <div class="box">
                     <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
                     <p class="" name="" alt="">상태 : </p>
-                    <button class="" name="" alt="">이미지 업로드</button>
+                    <p>{{form.post_image}}</p>
                     <div class="submit-box">
                         <button class="temporary-button" name="" alt="">임시저장</button>
                         <button class="save-button" type="submit">글 작성</button>
