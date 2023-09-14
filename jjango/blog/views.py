@@ -34,6 +34,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 # 메인 화면
 def index(request):
     # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
+
     # try:
     #     latest_post = Post.objects.latest('post_created_at')
     # except ObjectDoesNotExist:
@@ -56,7 +57,6 @@ def index(request):
     # context = {'latest_post': latest_post, 'posts': posts}
     context = {'latest_post': most_viewed, 'posts': posts}
     return render(request, 'index.html', context)
-
 
 def topic_post(request, topic=None) :
     if topic:
