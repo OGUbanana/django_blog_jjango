@@ -108,7 +108,8 @@ def create_post(request):
                  user_id=request.user,
                  post_title=request.POST.get("post_title"),
                  post_content=contents, 
-                 post_topic=request.POST.get("post_topic")
+                 post_topic=request.POST.get("post_topic"),
+                 post_image =request.POST.get("post_image")
              )
 
               return redirect('blog:post_detail', post_id=new_post.post_id)
