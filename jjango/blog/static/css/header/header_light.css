@@ -2,6 +2,15 @@
   font-family: 'Pretendard', sans-serif;
 }
 
+button {
+  cursor: pointer;
+  all: unset;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 .nav-bar {
   display: flex;
   align-items: center;
@@ -33,12 +42,9 @@
   gap: 2em;
 }
 
-a:link {
-  color: #F9F8F4;
-}
-
-.primary-button:visited {
-  color: #F9F8F4;
+.nav-topics {
+  display: flex;
+  gap: 40px;
 }
 
 a:visited {
@@ -53,24 +59,19 @@ a:active {
   color: #F9F8F4;
 }
 
+a:link {
+  color: #F9F8F4;
+}
+
 .nav-buttons {
   display: flex;
   align-items: center;
   gap: 56px;
 }
 
-.nav-topics {
-  display: flex;
-  gap: 40px;
-}
-
-button {
-  cursor: pointer;
-  all: unset;
-}
-
-button:hover {
-  cursor: pointer;
+.logout-button:hover {
+  color: rgb(255, 162, 162);
+  transition: transform 0.8s, color 0.3s;
 }
 
 .primary-button {
@@ -86,20 +87,12 @@ button:hover {
   padding: 10px 25px;
 }
 
+.primary-button:visited {
+  color: #F9F8F4;
+}
+
 .primary-button:hover {
   background-color: #696969;
   transition: transform 0.8s, background-color 0.3s;
   color: #1e1e1e;
-}
-
-.logout-button:hover {
-  color: rgb(255, 162, 162);
-  transition: transform 0.8s, color 0.3s;
-}
-
-
-.row-box {
-  display: flex;
-  align-items: center;
-  gap: 20px;
 }
