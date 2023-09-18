@@ -18,7 +18,7 @@ router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path('<str:post_topic>', views.index, name='index_topic'),
+    path('<str:topic>', views.index, name='index_topic'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthForm), name='login'),
      path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('board/', views.board, name="board"),

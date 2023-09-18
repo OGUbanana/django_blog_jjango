@@ -32,7 +32,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 
-def index(request):
+def index(request, topic=None):
     # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
 
     # try:
@@ -45,7 +45,10 @@ def index(request):
     # most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
     
     # posts = Post.objects.all()
-    posts = Post.objects.all().order_by('-post_views')  # 조회수 순으로 정렬
+    if topic:
+        posts = Post.objects.all().filter(post_topic=topic).order_by('-post_views')
+    else:
+        posts = Post.objects.all().order_by('-post_views')  # 조회수 순으로 정렬
     if posts:
         most_viewed = posts[0]
     else:
