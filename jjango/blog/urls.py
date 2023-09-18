@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, PostViewSet, CommentViewSet
+from .views import PostViewSet, CommentViewSet
 from django.contrib.auth import views as auth_views
 from .forms import CustomAuthForm
 from django.conf.urls.static import static
@@ -11,7 +11,6 @@ app_name = "blog"
 
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
 router.register(r'posts', PostViewSet)
 router.register(r'comments', CommentViewSet)
 
@@ -25,8 +24,6 @@ urlpatterns = [
     path('write/',
           views.create_post, name='create_post'),
      path('edit_post/<int:post_id>', views.create_post, name='create_post'),
-     path('post/delete/<int:post_id>/',
-          views.delete_post, name='delete_post'),   
 
      # 토픽별 분류 - 아직 진행중(23.09.14)
      path('post_list/<strLtopic>/', views.topic_post, name='topic_post'),

@@ -14,7 +14,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .forms import CommentForm, BlogPost, CustomAuthForm
 from rest_framework import viewsets
-from .serializers import PostSerializer, UserSerializer, CommentSerializer
+from .serializers import PostSerializer, CommentSerializer
 from django.db.models import Max
 from . parsing_image import get_images
 
