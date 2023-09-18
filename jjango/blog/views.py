@@ -141,6 +141,7 @@ def create_post(request, post_id=None):
         if form.is_valid():
             content= request.POST.get("post_content")
             contents=html.unescape(content)
+            publish_status = request.POST.get("temporary-button", "Y")
             images = get_images(contents)
             if request.FILES:
                 img = request.FILES['post_image']
@@ -155,6 +156,7 @@ def create_post(request, post_id=None):
             new_post.post_content=contents
             new_post.post_topic=request.POST.get("post_topic")
             new_post.post_image=img
+            new_post.post_publish=publish_status
 
             
              # 새로운 Post 객체의 속성 설정 후 save() 호출
