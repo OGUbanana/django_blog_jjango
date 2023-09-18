@@ -9,11 +9,12 @@ import html
 import re
 from django.conf import settings
 from django.http import JsonResponse
-from .models import Post,User,Comment
+from .models import Post,User,Comment, Images
 from .forms import CommentForm, BlogPost, CustomAuthForm
 from rest_framework import viewsets
 from .serializers import PostSerializer, UserSerializer, CommentSerializer
 from django.db.models import Max
+from . parsing_image import get_images
 
 # Create your views here.
 
@@ -127,14 +128,29 @@ def create_post(request):
         if form.is_valid():
             content= request.POST.get("post_content")
             contents=html.unescape(content)
-            contents=re.sub(r'<.*?>', '',  contents)
+            # contents=re.sub(r'<.*?>', '',  contents)
+            images = get_images(contents)
+            print(request)
             new_post = Post.objects.create(
                 user_id=request.user,
                 post_title=request.POST.get("post_title"),
                 post_content=contents, 
                 post_topic=request.POST.get("post_topic"),
-                post_image =request.FILES.get("post_image")
             )
+            
+            if request.FILES:
+                for image in request.FILES:
+                    Images.objects.create(
+                        post_id = new_post,
+                        image =  request.FILES[image]
+                    )
+            if images:
+                for image in images:
+                    Images.objects.create(
+                        post_id = new_post,
+                        image = image
+                    )
+                    
 
             return redirect('blog:post_detail', post_id=new_post.post_id)
 
