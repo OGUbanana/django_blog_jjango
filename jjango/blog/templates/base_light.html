@@ -22,11 +22,11 @@
                 </div>
                 <div class="nav-toolbar">
                     <div class="nav-topics">
-                        <a href="">일상</a>
-                        <a href="">요리</a>
-                        <a href="">여행</a>
-                        <a href="">영화</a>
-                        <a href="">IT</a>
+                        <a href="{% url 'blog:post_topic' post_topic='일상' %}">일상</a>
+                        <a href="{% url 'blog:post_topic' post_topic='요리' %}">요리</a>
+                        <a href="{% url 'blog:post_topic' post_topic='여행' %}">여행</a>
+                        <a href="{% url 'blog:post_topic' post_topic='영화' %}">영화</a>
+                        <a href="{% url 'blog:post_topic' post_topic='IT' %}">IT</a>
                     </div> 
                     <div class="nav-buttons">
                         {% if user.is_authenticated %}

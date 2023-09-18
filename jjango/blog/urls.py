@@ -26,7 +26,7 @@ urlpatterns = [
      path('edit_post/<int:post_id>', views.create_post, name='create_post'),
 
      # 토픽별 분류 - 아직 진행중(23.09.14)
-     path('post_list/<strLtopic>/', views.topic_post, name='topic_post'),
+    path('post_list/<str:post_topic>/', views.index, name='post_topic'),
     
     #댓글
     path('comment/create/post/<int:post_id>/', views.create_comment, name='create_comment'),
@@ -35,7 +35,7 @@ urlpatterns = [
 
     path('api/', include(router.urls)),
     path('board/<int:post_id>/', views.board, name='post_detail')
-
+    
 
 ]
 

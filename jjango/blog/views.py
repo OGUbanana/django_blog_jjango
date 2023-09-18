@@ -3,20 +3,19 @@ from django.contrib.auth import logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.core.exceptions import ObjectDoesNotExist
 import openai
 import html
 import re
+from django.http import HttpResponseNotFound
 from django.conf import settings
-from django.http import JsonResponse
-from .models import Post,User,Comment, Images
+from .models import Post,Comment, Images
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .forms import CommentForm, BlogPost, CustomAuthForm
 from rest_framework import viewsets
 from .serializers import PostSerializer, CommentSerializer
 from django.db.models import Max
-from . parsing_image import get_images
+from .parsing_image import get_images
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -34,31 +33,38 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 # Create your views here.
-def index(request):
-    posts = Post.objects.filter(post_publish='Y').order_by('-post_views')  # 조회수 순으로 정렬
-    if posts:
-        most_viewed = posts[0]
+def index(request, post_topic=None):
+    if post_topic:
+        posts = Post.objects.filter(post_topic=post_topic, post_publish='Y').order_by('-post_views')
+
     else:
-        most_viewed = []
-    if len(posts) > 1:
-        posts = posts[1:]
-    else:
-        posts = []
-    context = {'latest_post': most_viewed, 'posts': posts}
+        posts = Post.objects.filter(post_publish='Y').order_by('-post_views') 
+    context = {'posts': posts}
     return render(request, 'index.html', context)
 
-def topic_post(request, topic=None) :
-    if topic:
-        posts = Post.objects.filter(post_topic=topic, post_publish='Y').order_by('-post_views')
-        # 최다 조회수 가져오기
-        # most_viewed = Post.objects.aggregate(most_view = Max('post_views'))
-        most_viewed = Post.objects.filter(post_topic=topic, post_publish='Y').aggregate(most_view = Max('post_views'))
-        print(most_viewed)
-        most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
-        print(most_viewed_post[0])
+# def topic_post(request, topic=None) :
+#     if topic:
+#         posts = Post.objects.filter(post_topic=topic, post_publish='Y').order_by('-post_views')
+
+#         most_viewed = Post.objects.filter(post_topic=topic, post_publish='Y').aggregate(most_view = Max('post_views'))
+#         print(most_viewed)
+#         most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
+#         print(most_viewed_post[0])
         
-    context = {'latest_post': most_viewed_post[0], 'posts': posts}
-    return render(request, 'index_topic.html', {'posts':posts})
+#     context = {'latest_post': most_viewed_post[0], 'posts': posts}
+#     return render(request, 'index_topic.html', {'posts':posts})
+
+# 특정 주제로 필터링 
+# def post_list(request, post_topic=None):
+
+#     if post_topic:
+#         posts = Post.objects.filter(post_topic=post_topic, post_publish='Y').order_by('-post_views')
+
+#     else:
+#         posts = Post.objects.filter(post_publish='Y').order_by('-post_views') 
+#     return render(request, 'post_list.html', {'posts': posts})
+
+
 
 def board(request,post_id):
     post = Post.objects.get(pk=post_id)
