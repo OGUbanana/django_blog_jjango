@@ -54,7 +54,7 @@
                     <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
                     <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
                     <p class="" name="" alt="">상태 : </p>
-                    <p>{{form.post_image}}</p>
+                    <button onclick='CKEDITOR.tools.callFunction(39,this);return false;'>이미지업로드</button>
                     <div class="submit-box">
                         <button class="temporary-button" name="" alt="">임시저장</button>
                         <button class="save-button" type="submit">글 작성</button>
