@@ -17,22 +17,6 @@ from django.db.models import Max
 from . parsing_image import get_images
 
 # Create your views here.
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-
-
-# 메인 화면
-# 메인 화면
 def index(request):
     # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
 
