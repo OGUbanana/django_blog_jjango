@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/reset.css'%}">
-    <link rel="stylesheet" href="{% static 'css/header/header_black.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header/header_light.css' %}">
     <link rel="stylesheet" href="{% static 'css/board/board.css'%}">
     {% block extra_css %}
     {% endblock %}
@@ -18,7 +18,7 @@
         <div class="nav-bar">
             <div class="nav-container">
                 <div class="nav-img">
-                    <img src="{% static 'header/blog_img_white.svg' %}" alt="" onclick="location.href='{%url 'blog:index'%}'">
+                    <img src="{% static 'header/blog_img_black.svg' %}" alt="" onclick="location.href='{%url 'blog:index'%}'">
                 </div>
                 <div class="nav-toolbar">
                     <div class="nav-topics">
@@ -27,14 +27,6 @@
                         <a href="">여행</a>
                         <a href="">영화</a>
                         <a href="">IT</a>
-                        {% comment %}
-                        # 아직 진행중(23.09.14) -> url 경로부분
-                        <a href="{% url 'blog:topic_post' topic='일상' %}">일상</a>
-                        <a href="{% url 'blog:topic_post' topic='요리' %}">요리</a>
-                        <a href="{% url 'blog:topic_post' topic='여행' %}">여행</a>
-                        <a href="{% url 'blog:topic_post' topic='영화' %}">영화</a>
-                        <a href="{% url 'blog:topic_post' topic='IT' %}">IT</a>
-                        {% endcomment %}
                     </div> 
                     <div class="nav-buttons">
                         {% if user.is_authenticated %}
