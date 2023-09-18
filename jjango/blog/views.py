@@ -44,7 +44,6 @@ def index(request):
         posts = posts[1:]
     else:
         posts = []
-    # context = {'latest_post': latest_post, 'posts': posts}
     context = {'latest_post': most_viewed, 'posts': posts}
     return render(request, 'index.html', context)
 
@@ -130,56 +129,46 @@ def create_post(request, post_id=None):
     post = None
     if post_id:
        post = get_object_or_404(Post, pk=post_id)
-  
+
     if request.method == "POST":
         form = BlogPost(request.POST)
         if form.is_valid():
-            if 'delete-button' in request.POST:
-                post.delete() 
-                messages.success(request, "게시글이 삭제되었습니다.")
-                return redirect('blog:index') 
             content= request.POST.get("post_content")
             contents=html.unescape(content)
-            # contents=re.sub(r'<.*?>', '',  contents)
             images = get_images(contents)
-
-            if post is not None:
-                new_post=post
+            if request.FILES:
+                img = request.FILES['post_image']
+            elif not request.FILES and images:
+                img = images[0]
             else:
-              new_post = Post()
-
+                img = '/media/basic/django.jpg'
+                
+            new_post = Post()  # 새로운 Post 객체 생성
             new_post.user_id=request.user
             new_post.post_title=request.POST.get("post_title")
             new_post.post_content=contents
             new_post.post_topic=request.POST.get("post_topic")
-
-            
-            if request.FILES:
-                img = request.FILES['post_image']
-            elif not request.FILES and images:
-               img = images[0]
-            else:
-               img = '/media/basic/django.jpg'
-               
             new_post.post_image=img
 
-           
+            
+             # 새로운 Post 객체의 속성 설정 후 save() 호출
             new_post.save()
-
+            
+             
             if request.FILES:
-              for image in request.FILES.values():
-                  Images.objects.create(
-                      post_id=new_post,
-                      image=image
-                  )
+                 for image in request.FILES.values():
+                     Images.objects.create(
+                         post_id=new_post,
+                         image=image
+                     )
             if images:
-              for image in images[1:]:
-                  Images.objects.create(
-                      post_id=new_post,
-                      image=image
-                  )
+                 for image in images[1:]:
+                     Images.objects.create(
+                         post_id=new_post,
+                         image=image
+                     )
 
-        return redirect('blog:post_detail', post_id=new_post.post_id)
+            return redirect('blog:post_detail', post_id=new_post.post_id)
 
     else:  # GET 요청인 경우
         initial_data={}
@@ -191,7 +180,10 @@ def create_post(request, post_id=None):
               }
         form = BlogPost(initial=initial_data)
 
-    return render(request, 'write.html', {'form': form,'edit_mode': post_id is not None,'temporary_cnt':temporary_cnt})
+    return render(request, 'write.html', {'post': post, 'form': form, 'edit_mode': post_id is not None,'temporary_cnt':temporary_cnt})
+
+
+
 
 
 
