@@ -17,6 +17,21 @@ from django.db.models import Max
 from . parsing_image import get_images
 
 # Create your views here.
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+
 def index(request):
     # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
 
@@ -60,7 +75,7 @@ def board(request,post_id):
     post = Post.objects.get(pk=post_id)
     post.post_views += 1
     post.save()
-    sub_posts = Post.objects.filter(post_topic=post.post_topic)
+    sub_posts = Post.objects.filter(post_topic=post.post_topic).exclude(pk=post_id)
     context = {'post': post, 'sub_posts': sub_posts}
     return render(request, 'board.html', context)
   
@@ -114,12 +129,19 @@ def create_post(request):
             contents=html.unescape(content)
             # contents=re.sub(r'<.*?>', '',  contents)
             images = get_images(contents)
-            print(request)
+            if request.FILES:
+                img = request.FILES['post_image']
+            elif not request.FILES and images:
+                img = images[0]
+            else:
+                img = '/media/basic/django.jpg'
+                
             new_post = Post.objects.create(
                 user_id=request.user,
                 post_title=request.POST.get("post_title"),
                 post_content=contents, 
                 post_topic=request.POST.get("post_topic"),
+                post_image=img
             )
             
             if request.FILES:
