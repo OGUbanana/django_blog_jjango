@@ -36,7 +36,7 @@
             {% for post in posts %}
             <article class="card" onclick="location.href='board/{{post.post_id}}'">
                 {% if post.image %}
-                    <img class="card-thumbnail-img" src="{% static post.image.url %}" alt="Post_Image">
+                    <img class="card-thumbnail-img" src="{{ post.image.url }}" alt="Post_Image">
                 {% endif %}
                 <div class="card-info-box">
                     <p>{{ post.post_created_at }}</p>

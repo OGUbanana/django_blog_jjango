@@ -23,7 +23,8 @@
                 {% csrf_token %}
                 <h1> {{blog.title}} </h1>
                 <p> {{form.media}} </p>
-                <p> {{form.as_p}} </p>
+                <p> {{form.post_title}} </p>
+                <p> {{form.post_content}} </p>
             </div>
              <br>
             <section class="box1">

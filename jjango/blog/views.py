@@ -33,18 +33,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 def index(request, topic=None):
-    # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
 
-    # try:
-    #     latest_post = Post.objects.latest('post_created_at')
-    # except ObjectDoesNotExist:
-    #     latest_post = None
-
-    # 최다 조회수 가져오기
-    # most_viewed = Post.objects.aggregate(most_view = Max('post_views'))
-    # most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
-    
-    # posts = Post.objects.all()
     if topic:
         posts = Post.objects.all().filter(post_topic=topic).order_by('-post_views')
     else:
