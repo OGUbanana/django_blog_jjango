@@ -17,8 +17,7 @@
 
     {% block contents %}
     <div class = "container">
-        <form method ="POST" id="write-form" action="{% url 'blog:create_post' %}" enctype="multipart/form-data">
-
+        <form method ="POST" id="write-form" action="{% if edit_mode %}{% url 'blog:create_post' post.pk %}{% else %}{% url 'blog:create_post' %}{% endif %}" enctype="multipart/form-data">
             <div class="conatiner">
                 {% csrf_token %}
                 <h1> {{blog.title}} </h1>
@@ -36,33 +35,49 @@
                 <div class="box">
                     <h4 class="title">TOPIC</h4>
                     <div class="box-topic">
-                        <input type="radio" name="post_topic" value="일상" id="daily">
+                        <input type="radio" name="post_topic" value="일상" id="daily" required {% if post.post_topic == "일상" %}checked{% endif %}>
                         <label for="daily">일상</label><br>
-                        <input type="radio" name="post_topic" value="요리" id="cook">
+                        <input type="radio" name="post_topic" value="요리" id="cook" {% if post.post_topic == "요리" %}checked{% endif %}>
                         <label for="cook">요리</label><br>
-                        <input type="radio" name="post_topic" value="여행" id="trip">
+                        <input type="radio" name="post_topic" value="여행" id=="trip"{% if post.post_topic == "여행"%}checked{% endif %}>
                         <label for="trip">여행</label><br>
-                        <input type="radio" name="post_topic" value="영화" id="movie">
-                        <label for="movie">영화</label><br>
-                        <input type="radio" name="post_topic" value="IT/전자기기" id="it/electronics">
-                        <label for="it/electronics">IT/전자기기</label>
+                        <input type="radio"name="post_topic"value="영화"id=="movie"{% if post.post_topic == "영화"%} checked {%endif%}> 
+                        <label for = "movie"> 영화 </label><br> 
+                        <input type ="radio"name ="post_topic"value = "IT/전자기기" id ="it/electronics"{%if post.post_topic == "IT/전자기기"%} checked {%endif%}> 
+                        <label for ="it/electronics"> IT / 전자 기기 </label>
                     </div>
                 </div>
+                
             
                 <div class="box">
                     <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
                     <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
-                    <p class="" name="" alt="">상태 : </p>
                     <p>{{form.post_image}}</p>
                     <div class="submit-box">
-                        <button class="temporary-button" name="" alt="">임시저장</button>
-                        <button class="save-button" type="submit">글 작성</button>
-                        {% comment %} <a class="save-button" href="{% url 'blog:board' %}">글 작성</a> {% endcomment %}
+                        {% if edit_mode %}
+                        <button type="submit" name="delete-button" class="delete-button" value="삭제">삭제</button>
+                        <button type="submit" class="save-button" value="Y">수정</button>
+                        {% else %}                     
+                        <button class="temporary-button" type="submit" name="temporary-button" value="N">임시저장</button>
+                        <button id="temporary-btn" class="temporary-btn" type="button">{{ temporary_cnt }}</button>
+                        <button class="save-button" type="submit" value="Y">글 작성</button>
+                        {% endif %}
                     </div>
-                </div>
             </section>
         </form>
-        
+        <div id="modal-background" style="display: none;"></div>
+        <div id = "temp-popup" style="display : none;">
+            <div class="popup-top">
+                <div>임시저장 글</div>
+                <button id='close-button'>X</button>
+            </div>
+            <div class="popup-title">
+                <p class="top-title">제목</p>
+                <p class="top-content">내용</p>
+                <p class="top-created">작성 날짜</p>
+            </div>
+        </div>
+    </div>
     </div>
     <script src="{% static 'js/write.js' %}"></script>
     {% endblock %}

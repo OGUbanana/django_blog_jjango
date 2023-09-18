@@ -21,13 +21,10 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthForm), name='login'),
      path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('board/', views.board, name="board"),
-
-
     #게시글
     path('write/',
           views.create_post, name='create_post'),
-     path('post/modify/<int:post_id>/',
-          views.modify_post, name='modify_post'),
+     path('edit_post/<int:post_id>', views.create_post, name='create_post'),
      path('post/delete/<int:post_id>/',
           views.delete_post, name='delete_post'),   
 

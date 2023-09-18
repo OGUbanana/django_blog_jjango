@@ -38,8 +38,14 @@
         <div class="button-box">
             {% if user.is_authenticated %}
                 <div class="edit-delete-box">
-                    <button class="edit-button">수정하기</button>
-                    <button class="delete-button">삭제하기</button>
+                    <a href="{% url 'blog:create_post' post.pk %}">
+                        <button class="edit-button">수정하기</button>
+                    </a>
+                    <form method="POST" action="{% url 'blog:post_detail' post.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete-button" value="true">
+                        <button type="submit" class="delete-button">삭제하기</button>
+                      </form>                    
                 </div>
                 <div class="share-box">
                     <button class="share-button">공유하기</button>
@@ -53,16 +59,31 @@
     </section>
     <section class='post-list'>
         <div class="post-box">
+            {% if next_post %}
             <div class="another-post-box">
                 <p>다음글</p>
-                <div class="post-name"></div>
-                <p></p>
+                <div class="post-name">
+                    <a href="{% url 'blog:post_detail' next_post.post_id %}">{{ next_post.post_title }}</a>
+                </div>
+                <p>
+                    {{ next_post.post_created_at }}
+                </p>
             </div>
+            {% else %}
+            <div class="another-post-box"></div>
+            {% endif %}
+
+            {% if previous_post %}
             <div class="another-post-box">
                 <p>이전글</p>
-                <div class="post-name"></div>
-                <p></p>
+                <div class="post-name">
+                    <a href="{% url 'blog:post_detail' previous_post.post_id %}">{{ previous_post.post_title }}</a>
                 </div>
+                <p>{{ previous_post.post_created_at }}</p>
+                </div>
+                {% else %}
+                <div class="another-post-box"></div>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -70,7 +91,6 @@
         // 공유하기 버튼 클릭 시
         document.querySelector('.share-button').addEventListener('click', function() {
           let postUrl = window.location.href;
-          
           // 클립보드에 복사
           let tempInput = document.createElement("input");
           document.body.appendChild(tempInput);

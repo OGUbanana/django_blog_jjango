@@ -191,6 +191,7 @@ a {
 }
 
 .post-name {
+    width: 800px;
     font-weight: 700;
     margin-left: 10px;
 }
