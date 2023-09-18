@@ -36,13 +36,19 @@
     </section>
     <section class="list-box">
         <div class="button-box">
-            <div class="edit-delete-box">
-                <button class="edit-button">수정하기</button>
-                <button class="delete-button">삭제하기</button>
-            </div>
+            {% if user.is_authenticated %}
+                <div class="edit-delete-box">
+                    <button class="edit-button">수정하기</button>
+                    <button class="delete-button">삭제하기</button>
+                </div>
+                <div class="share-box">
+                    <button class="share-button">공유하기</button>
+                </div>
+            {% else %}
             <div class="share-box">
                 <button class="share-button">공유하기</button>
             </div>
+            {% endif %}
         </div>
     </section>
     <section class='post-list'>
@@ -60,8 +66,23 @@
             </div>
         </div>
     </section>
+    <script>
+        // 공유하기 버튼 클릭 시
+        document.querySelector('.share-button').addEventListener('click', function() {
+          let postUrl = window.location.href;
+          
+          // 클립보드에 복사
+          let tempInput = document.createElement("input");
+          document.body.appendChild(tempInput);
+          tempInput.value = postUrl;
+          tempInput.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempInput);
+          
+          // 알림 표시
+          alert('포스트 링크가 클립보드에 복사되었습니다');
+        });
+      </script>
     {% endblock %}
-    
 </body>
 </html>
-

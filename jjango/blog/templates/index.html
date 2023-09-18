@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -14,32 +14,27 @@
     {% block contents %}
     <section class="first-post-box">
         {% if latest_post %}
-        <div class="container">
-            <div class="post-info-box">
-                {% comment %}
-                views.py에 latest_post = Post.objects.latest('post_created_at')
-                urls.py에 path('post/<int:pk>/', views.board, name='post_detail')
-
-                views.py와 urls.py에 위 두 코드를 넣고 테스트. 두 파일 수정되면 코드 수정해야함.
-                {% endcomment %}
-                <h3 class= "title">{{ latest_post.post_title }}</h3>
-                <p class = "content">{{ latest_post.post_content }}</p>
-                <button onclick="location.href='{% url 'blog:post_detail' post_id=latest_post.pk %}'" class="Read_More">Read More</button>
+            <div class="container">
+                <div class="post-info-box">
+                    <h3 class= "title">{{ latest_post.post_title }}</h3>
+                    <p class = "content">{{ latest_post.post_content }}</p>
+                    {% comment %} <button onclick="location.href='{% url 'blog:post_detail' post_id=latest_post.pk %}'" class="Read_More">Read More</button> {% endcomment %}
+                    <button onclick="location.href='{% url 'blog:post_detail' post_id=latest_post.pk %}'" class="Read_More">Read More</button>
+                </div>
+                {% if latest_post.image %}
+                    <img class="thumbnail-img" src="{{latest_post.post_image.url}}" alt="Latest_Post_Image">
+                {% endif %}
             </div>
-            {% if latest_post.image %}
-                <img class="thumbnail-img" src="{% static latest_post.post_image.url %}" alt="Latest_Post_Image">
-            {% endif %}
-        </div>
 
-    {% else %}
-        <p>최근 포스트가 없습니다.</p>
-    {% endif %}
+         {% else %}
+             <p>최근 포스트가 없습니다.</p>
+         {% endif %}
     </section>
 
     <section class="post-box">
         <div class="container">
             {% for post in posts %}
-            <article class="card">
+            <article class="card" onclick="location.href='board/{{post.post_id}}'">
                 {% if post.image %}
                     <img class="card-thumbnail-img" src="{% static post.image.url %}" alt="Post_Image">
                 {% endif %}

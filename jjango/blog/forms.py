@@ -24,7 +24,7 @@ class UserForm(UserCreationForm):
 class BlogPost(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['post_title' , 'post_content']
+        fields = ['post_title' , 'post_content', 'post_image']
         widgets = {
             'post_title': forms.TextInput(attrs={'placeholder': '제목'}),
          }

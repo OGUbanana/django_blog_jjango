@@ -3,13 +3,17 @@ from django.contrib.auth import logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 import openai
+import html
+import re
 from django.conf import settings
 from django.http import JsonResponse
 from .models import Post,User,Comment
-from .forms import CommentForm, BlogPost, CustomUserForm, CustomAuthForm
+from .forms import CommentForm, BlogPost, CustomAuthForm
 from rest_framework import viewsets
 from .serializers import PostSerializer, UserSerializer, CommentSerializer
+from django.db.models import Max
 
 # Create your views here.
 
@@ -26,57 +30,55 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
 
-
-
+# 메인 화면
 # 메인 화면
 def index(request):
-    latest_post = Post.objects.latest('post_created_at')
-    posts = Post.objects.all()
-    context = {'latest_post': latest_post, 'posts': posts}
+    # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
+
+    # try:
+    #     latest_post = Post.objects.latest('post_created_at')
+    # except ObjectDoesNotExist:
+    #     latest_post = None
+
+    # 최다 조회수 가져오기
+    # most_viewed = Post.objects.aggregate(most_view = Max('post_views'))
+    # most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
+    
+    # posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-post_views')  # 조회수 순으로 정렬
+    if posts:
+        most_viewed = posts[0]
+    else:
+        most_viewed = []
+    if len(posts) > 1:
+        posts = posts[1:]
+    else:
+        posts = []
+    # context = {'latest_post': latest_post, 'posts': posts}
+    context = {'latest_post': most_viewed, 'posts': posts}
     return render(request, 'index.html', context)
 
-
-#회원가입
-def signup(request):
-    if request.method == "POST":
-        form = CustomUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)  # 사용자 인증
-            login(request, user)  # 로그인
-            return redirect('index')
-    else:
-        form = CustomUserForm()
-    return render(request, 'signup.html', {'form': form})
-
+def topic_post(request, topic=None) :
+    if topic:
+        posts = Post.objects.filter(post_topic=topic, post_publish='Y').order_by('-post_views')
+        # 최다 조회수 가져오기
+        # most_viewed = Post.objects.aggregate(most_view = Max('post_views'))
+        most_viewed = Post.objects.filter(post_topic=topic, post_publish='Y').aggregate(most_view = Max('post_views'))
+        print(most_viewed)
+        most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
+        print(most_viewed_post[0])
+        
+    context = {'latest_post': most_viewed_post[0], 'posts': posts}
+    return render(request, 'index_topic.html', {'posts':posts})
 
 def board(request,post_id):
     post = Post.objects.get(pk=post_id)
+    post.post_views += 1
+    post.save()
     sub_posts = Post.objects.filter(post_topic=post.post_topic)
     context = {'post': post, 'sub_posts': sub_posts}
     return render(request, 'board.html', context)
-
-# 로그인 처리
-# def login(request):
-#     if request.method == "POST":
-#         input_id = request.POST["user_id"]
-#         input_pwd = request.POST["user_pwd"]
-
-#         try :
-#             user = user.objects.get(user_id=input_id)
-
-#             if user.user_pwd == input_pwd:
-#                 return render(request, "index.html", {"login" : "success", "user_name" : user.user_name})
-#             else :
-#                 return render(request, "index.html", {"login": "pwd_fail"})
-#         except Post.DoesNotExist :
-#             return render(request, "login.html", {"login":"user_fail"})
-        
-#     else :
-#         return render(request, "login.html")
-    
+  
 def login(request):
     if request.user.is_authenticated:
         return redirect('blog:index')
@@ -89,73 +91,60 @@ def login(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect('blog:index')  # 슈퍼유저와 일반 사용자 모두 동일한 페이지로 리다이렉션
+                    return redirect('blog:index')
         return render(request, 'login.html', {'form': form})
 
-
-
-
-        
 # 로그아웃 처리
 def logout(request):
     logout(request)
     return render(request, "index.html", {"login": "logout"})
 
+def autocomplete(post_title):
+    api_key = settings.OPENAI_API_KEY
+                
+    response_generator = openai.ChatCompletion.create(
+        model='gpt-3.5-turbo',
+        messages=[
+            {"role": "system", "content": f"당신은 '{post_title}'에 대한 블로그 포스트를 작성에 도움을 주는 비서입니다."},
+            {"role": "user", "content": f"'{post_title}'에 대한 블로그 글을 작성해주세요. 제목은 제외하고 블로그 글만 써주세요. 200자 이내로만 작성하고 문장은 완성형."},
+        ],
+        stream=True,
+        max_tokens=400,
+        n=1,
+        api_key=api_key  
+    )   
+    return response_generator
+
+
+
+
 # 게시글 작성 처리
+
 @login_required(login_url='blog:login')
 def create_post(request):
-    # if request.method == "POST" and request.FILES :
-    #     user_name = request.POST["user_name"]
-    #     title = request.POST["title"]
-    #     content = request.POST["content"]
-    #     created_at = request.POST["created_at"]
-    #     image = request.FILES["image"]
     if request.method == "POST":
         form = BlogPost(request.POST)
-        
-        # 폼 유효성 검사
         if form.is_valid():
-            # user_name = form.cleaned_data.get("user_name", "")
-            post_title = form.cleaned_data.get("post_title", "")
-            content = form.cleaned_data.get("content", "")
-            # created_at = form.cleaned_data.get("created_at", "")
-
-            # GPT-3.5-turbo API 호출 및 자동완성 결과 생성
-            api_key = settings.OPENAI_API_KEY
-            
-            response = openai.ChatCompletion.create(
-                model='gpt-3.5-turbo',
-                messages=[
-                    {"role": "system", "content": f"당신은 '{post_title}'에 대한 블로그 포스트를 작성하는 도움이 되는 비서입니다."},
-                    {"role": "user", "content": f"'{post_title}'에 대한 블로그 글을 작성해주세요. 제목은 제외하고 블로그 글만 써주세요."},
-                ],
-                max_tokens=400,
-                n=1,
-                api_key=api_key  
+            content= request.POST.get("post_content")
+            contents=html.unescape(content)
+            contents=re.sub(r'<.*?>', '',  contents)
+            new_post = Post.objects.create(
+                user_id=request.user,
+                post_title=request.POST.get("post_title"),
+                post_content=contents, 
+                post_topic=request.POST.get("post_topic"),
+                post_image =request.FILES.get("post_image")
             )
-            
-            completion_text = response['choices'][0]['message']['content'].strip()
-            
-            last_period_index = completion_text.rfind('.')
-            
-            if last_period_index != -1:
-               completion_text = completion_text[:last_period_index+1]
-            
-           # 데이터베이스에 저장
-            # user, _created  = User.objects.get_or_create(user_name=user_name)
-            # Post.objects.create(
-            #    user_id=user.id,
-            #    title=title,
-            #    content=completion_text,  # AI가 생성한 내용을 content로 사용
-            #    created_at=created_at
-        #    )
 
-            return JsonResponse({'completion': completion_text})
+            return redirect('blog:post_detail', post_id=new_post.post_id)
 
     else:  # GET 요청인 경우
         form = BlogPost()
 
     return render(request, 'write.html', {'form': form})
+
+
+
 
 #게시글 수정
 @login_required(login_url='blog:login')

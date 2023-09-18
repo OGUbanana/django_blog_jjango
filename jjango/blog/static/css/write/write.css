@@ -118,6 +118,24 @@ p label {
     border: 1px solid #1E1E1E;
 }
 
+.submit-box {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.temporary-button {
+    display: flex;
+    width: 80px;
+    padding: 4px 17px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 3px;
+    border: 1px solid #1E1E1E;
+}
+
 .save-button {
 .submit-box {
     margin-top: 40px;
