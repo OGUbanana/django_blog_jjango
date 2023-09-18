@@ -224,10 +224,10 @@ a {
 }
 
 .post-name {
-    font-weight: 800px;
+    width: 800px;
+    font-weight: 700;
     margin-left: 10px;
 }
-
 .footer {
     display: flex;
     background-color: #E7E3DA;
