@@ -143,27 +143,19 @@ def create_post(request, post_id=None):
             # contents=re.sub(r'<.*?>', '',  contents)
             publish_status = request.POST.get("temporary-button", "Y")
             images = get_images(contents)
-            new_post = Post.objects.create(
-                user_id=request.user,
-                post_title=request.POST.get("post_title"),
-                post_content=contents, 
-                post_topic=request.POST.get("post_topic"),
-                post_image =request.FILES.get("post_image"),
-                post_publish=publish_status
-            )
-            
-            if request.FILES:
-                for image in request.FILES:
-                    Images.objects.create(
-                        post_id = new_post,
-                        image =  request.FILES[image]
-                    )
-            if images:
-                for image in images:
-                    Images.objects.create(
-                        post_id = new_post,
-                        image = image
-                    )
+
+            if post is not None:
+                new_post=post
+            else:
+              new_post = Post()
+
+            new_post.user_id=request.user
+            new_post.post_title=request.POST.get("post_title")
+            new_post.post_content=contents
+            new_post.post_topic=request.POST.get("post_topic")
+            new_post.post_image=request.FILES.get("post_image")
+           
+            new_post.save()
                     
 
             return redirect('blog:post_detail', post_id=new_post.post_id)
