@@ -141,7 +141,6 @@ def create_post(request, post_id=None):
             content= request.POST.get("post_content")
             contents=html.unescape(content)
             # contents=re.sub(r'<.*?>', '',  contents)
-            publish_status = request.POST.get("temporary-button", "Y")
             images = get_images(contents)
 
             if post is not None:
@@ -153,12 +152,34 @@ def create_post(request, post_id=None):
             new_post.post_title=request.POST.get("post_title")
             new_post.post_content=contents
             new_post.post_topic=request.POST.get("post_topic")
-            new_post.post_image=request.FILES.get("post_image")
+
+            
+            if request.FILES:
+                img = request.FILES['post_image']
+            elif not request.FILES and images:
+               img = images[0]
+            else:
+               img = '/media/basic/django.jpg'
+               
+            new_post.post_image=img
+
            
             new_post.save()
-                    
 
-            return redirect('blog:post_detail', post_id=new_post.post_id)
+            if request.FILES:
+              for image in request.FILES.values():
+                  Images.objects.create(
+                      post_id=new_post,
+                      image=image
+                  )
+            if images:
+              for image in images[1:]:
+                  Images.objects.create(
+                      post_id=new_post,
+                      image=image
+                  )
+
+        return redirect('blog:post_detail', post_id=new_post.post_id)
 
     else:  # GET 요청인 경우
         initial_data={}
@@ -170,7 +191,8 @@ def create_post(request, post_id=None):
               }
         form = BlogPost(initial=initial_data)
 
-    return render(request, 'write.html', {'post': post, 'form': form, 'edit_mode': post_id is not None,'temporary_cnt':temporary_cnt})
+    return render(request, 'write.html', {'form': form,'edit_mode': post_id is not None,'temporary_cnt':temporary_cnt})
+
 
 
 #댓글 등록
