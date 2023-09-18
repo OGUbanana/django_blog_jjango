@@ -2,6 +2,21 @@
   font-family: 'Pretendard', sans-serif;
 }
 
+button {
+  cursor: pointer;
+  all: unset;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+
 .nav-bar {
   display: flex;
   align-items: center;
@@ -17,17 +32,17 @@
   font-family: 'Pretendard', sans-serif;
 }
 
-.nav-img {
-  display: flex;
-  justify-content: flex-start;
-}
-
 .nav-container {
   width: 1024px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: auto;
+}
+
+.nav-img {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .nav-toolbar {
@@ -38,6 +53,10 @@
   gap: 2em;
 }
 
+.nav-topics {
+  display: flex;
+  gap: 40px;
+}
 
 a:link {
   color: #f9f8f4;
@@ -53,26 +72,6 @@ a:hover {
 
 a:active {
   color: #f9f8f4
-}
-
-.nav-buttons {
-  display: flex;
-  align-items: center;
-  gap: 56px;
-}
-
-.nav-topics {
-  display: flex;
-  gap: 40px;
-}
-
-button {
-  cursor: pointer;
-  all: unset;
-}
-
-button:hover {
-  cursor: pointer;
 }
 
 .primary-button {
@@ -96,10 +95,4 @@ button:hover {
 .logout-button:hover {
   color: rgb(255, 162, 162);
   transition: transform 0.8s, color 0.3s;
-}
-
-.row-box {
-  display: flex;
-  align-items: center;
-  gap: 20px;
 }

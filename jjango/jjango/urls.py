@@ -18,9 +18,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from ckeditor_uploader import views as ck_views
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('ckeditor/', login_required(ck_views.upload), name='ckeditor_upload'),
+    path(
+        "browse/",
+        never_cache(login_required(ck_views.browse)),
+        name="ckeditor_browse",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

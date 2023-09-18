@@ -3,26 +3,20 @@ from django.contrib.auth import logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 import openai
 import html
 import re
 from django.conf import settings
 from django.http import JsonResponse
-from .models import Post,User,Comment
-from .forms import CommentForm, BlogPost, CustomAuthForm
-from rest_framework import viewsets
+from .models import Post,User,Comment, Images
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from .forms import CommentForm, BlogPost, CustomAuthForm
+from rest_framework import viewsets
 from .serializers import PostSerializer, UserSerializer, CommentSerializer
 from django.db.models import Max
-
-# Create your views here.
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+from . parsing_image import get_images
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -39,9 +33,21 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
 
-# 메인 화면
+# Create your views here.
 def index(request):
-    posts = Post.objects.filter(post_publish='Y').order_by('-post_views')  # 조회수 순으로 정렬
+    # 이부분은 일부러 안만지고 아래에 most_viewed라고 변수 추가해서 작성했습니다.
+
+    # try:
+    #     latest_post = Post.objects.latest('post_created_at')
+    # except ObjectDoesNotExist:
+    #     latest_post = None
+
+    # 최다 조회수 가져오기
+    # most_viewed = Post.objects.aggregate(most_view = Max('post_views'))
+    # most_viewed_post = list(Post.objects.filter(post_views=most_viewed['most_view']))
+    
+    # posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-post_views')  # 조회수 순으로 정렬
     if posts:
         most_viewed = posts[0]
     else:
@@ -72,6 +78,7 @@ def board(request,post_id):
     if request.method == 'POST': 
         if 'delete-button' in request.POST:
             post.delete()
+            messages.success(request, "게시글이 삭제되었습니다.")
             return redirect('blog:index')
         
     post.post_views += 1
@@ -125,25 +132,29 @@ def autocomplete(post_title):
     return response_generator
 
 
-# 게시글 작성/수정/삭제 처리
+
+
+# 게시글 작성 처리
+
 @login_required(login_url='blog:login')
 def create_post(request, post_id=None):
     temporary_cnt=Post.objects.filter(post_publish='N').count()
     post = None
     if post_id:
        post = get_object_or_404(Post, pk=post_id)
-
-
+  
     if request.method == "POST":
         form = BlogPost(request.POST)
         if form.is_valid():
             if 'delete-button' in request.POST:
                 post.delete() 
+                messages.success(request, "게시글이 삭제되었습니다.")
                 return redirect('blog:index') 
             content= request.POST.get("post_content")
             contents=html.unescape(content)
-            contents=re.sub(r'<.*?>', '',  contents)
+            # contents=re.sub(r'<.*?>', '',  contents)
             publish_status = request.POST.get("temporary-button", "Y")
+            images = get_images(contents)
             new_post = Post.objects.create(
                 user_id=request.user,
                 post_title=request.POST.get("post_title"),
@@ -152,6 +163,20 @@ def create_post(request, post_id=None):
                 post_image =request.FILES.get("post_image"),
                 post_publish=publish_status
             )
+            
+            if request.FILES:
+                for image in request.FILES:
+                    Images.objects.create(
+                        post_id = new_post,
+                        image =  request.FILES[image]
+                    )
+            if images:
+                for image in images:
+                    Images.objects.create(
+                        post_id = new_post,
+                        image = image
+                    )
+                    
 
             return redirect('blog:post_detail', post_id=new_post.post_id)
 
@@ -167,18 +192,6 @@ def create_post(request, post_id=None):
 
     return render(request, 'write.html', {'post': post, 'form': form, 'edit_mode': post_id is not None,'temporary_cnt':temporary_cnt})
 
-
-#게시글 삭제
-@login_required(login_url='blog:login')
-def delete_post(request, post_id):
-    if request.method == "POST":
-        post = get_object_or_404(Post, pk=post_id)
-        post.delete()
-        messages.success(request, "게시글이 삭제되었습니다.")
-        return redirect("index")
-    
-    post_delete = get_object_or_404(Post, pk=post_id)
-    return render(request, 'index.html', {'post': post_delete})
 
 #댓글 등록
 @login_required(login_url='blog:login')
@@ -230,6 +243,5 @@ def delete_comment(request, comment_id):
     else:
         comment.delete()
     return redirect('board', post_id=comment.post_id)
-
 
 
