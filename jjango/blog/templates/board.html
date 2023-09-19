@@ -1,22 +1,112 @@
 <!DOCTYPE html>
-{% extends "header.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 확인</title>
+</head>
+<body>
+    {% extends "base_light.html" %}
     {% block contents %}
     <section class='container'>
         <div class="box-divider">
-            <div class="big-box">\
+            <div class="big-box">
+                <h3>{{post.post_create_at}}</h3>
+                <h1>{{post.post_title}}</h1>
+                <h5>{{post.user_id}}</h5>
+                <div class="topic-box">
+                    {{post.post_topic}}
+                </div>
+                <div class="post-content">
+                    {{post.post_content|safe}}
+                </div>
             </div>
             <div class="small-box">
-
-            </div>
-        </div>
-        <div class="button-box">
-            <div class="edit-delete-box">
-                <button class="edit-button">수정하기</button>
-                <button class="delete-button">삭제하기</button>
-            </div>
-            <div class="share-box">
-                <button class="share-button">공유하기</button>
+                <p class="small-title">Other posts<br>you may like</p>
+                <div class="post-info">
+                {% for post in sub_posts %}
+                   <div class="recommend-box">
+                        <a href="{% url 'blog:post_detail' post.pk %}">
+                            {% if post.post_image %}
+                                <img src="{{post.post_image}}" alt="">
+                            {% endif %}
+                            <p>{{post.post_title}}</p>
+                        </a>
+                   </div> 
+                {% endfor %}
+                </div>
             </div>
         </div>
     </section>
+    <section class="list-box">
+        <div class="button-box">
+            {% if user.is_authenticated %}
+                <div class="edit-delete-box">
+                    <a href="{% url 'blog:create_post' post.pk %}">
+                        <button class="edit-button">수정하기</button>
+                    </a>
+                    <form method="POST" action="{% url 'blog:post_detail' post.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete-button" value="true">
+                        <button type="submit" class="delete-button">삭제하기</button>
+                      </form>                    
+                </div>
+                <div class="share-box">
+                    <button class="share-button">공유하기</button>
+                </div>
+            {% else %}
+            <div class="share-box">
+                <button class="share-button">공유하기</button>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <section class='post-list'>
+        <div class="post-box">
+            {% if next_post %}
+            <div class="another-post-box">
+                <p>다음글</p>
+                <div class="post-name">
+                    <a href="{% url 'blog:post_detail' next_post.post_id %}">{{ next_post.post_title }}</a>
+                </div>
+                <p>
+                    {{ next_post.post_created_at }}
+                </p>
+            </div>
+            {% else %}
+            <div class="another-post-box"></div>
+            {% endif %}
+
+            {% if previous_post %}
+            <div class="another-post-box">
+                <p>이전글</p>
+                <div class="post-name">
+                    <a href="{% url 'blog:post_detail' previous_post.post_id %}">{{ previous_post.post_title }}</a>
+                </div>
+                <p>{{ previous_post.post_created_at }}</p>
+                </div>
+                {% else %}
+                <div class="another-post-box"></div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <script>
+        // 공유하기 버튼 클릭 시
+        document.querySelector('.share-button').addEventListener('click', function() {
+          let postUrl = window.location.href;
+          // 클립보드에 복사
+          let tempInput = document.createElement("input");
+          document.body.appendChild(tempInput);
+          tempInput.value = postUrl;
+          tempInput.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempInput);
+          
+          // 알림 표시
+          alert('포스트 링크가 클립보드에 복사되었습니다');
+        });
+      </script>
     {% endblock %}
+</body>
+</html>
