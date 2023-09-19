@@ -55,6 +55,7 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 1em;
 }
 
@@ -224,10 +225,11 @@ a {
 }
 
 .post-name {
-    width: 800px;
+    width: 730px;
     font-weight: 700;
     margin-left: 10px;
 }
+
 .footer {
     display: flex;
     background-color: #E7E3DA;

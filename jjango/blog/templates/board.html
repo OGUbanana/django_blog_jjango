@@ -13,7 +13,7 @@
             <div class="big-box">
                 <h3>{{post.post_create_at}}</h3>
                 <h1>{{post.post_title}}</h1>
-                <h5>{{post.user_id}}</h5>
+                <h5>{{post.user_id}} / {{post.post_views}} Views</h5>
                 <div class="topic-box">
                     {{post.post_topic}}
                 </div>
@@ -70,7 +70,7 @@
                     <a href="{% url 'blog:post_detail' next_post.post_id %}">{{ next_post.post_title }}</a>
                 </div>
                 <p>
-                    {{ next_post.post_created_at }}
+                    {{next_post.post_views}} Views / {{ next_post.post_created_at }}
                 </p>
             </div>
             {% else %}
@@ -83,7 +83,9 @@
                 <div class="post-name">
                     <a href="{% url 'blog:post_detail' previous_post.post_id %}">{{ previous_post.post_title }}</a>
                 </div>
-                <p>{{ previous_post.post_created_at }}</p>
+                <p>
+                    {{ previous_post.post_views }} Views / {{ previous_post.post_created_at }}
+                </p>
                 </div>
                 {% else %}
                 <div class="another-post-box"></div>
