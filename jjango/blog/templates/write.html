@@ -18,7 +18,7 @@
 
     {% block contents %}
     <div class = "container">
-        <form method ="POST" id="write-form" action="{% if edit_mode %}{% url 'blog:create_post' post.pk %}{% else %}{% url 'blog:create_post' %}{% endif %}" enctype="multipart/form-data">
+        <form method ="POST" id="write-form" action="{% if edit_mode %}{% url 'blog:update_post' post.pk %}{% else %}{% url 'blog:create_post' %}{% endif %}" enctype="multipart/form-data">
             <div class="conatiner">
                 {% csrf_token %}
                 <h1> {{blog.title}} </h1>

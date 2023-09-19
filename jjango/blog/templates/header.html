@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/header/header_black.css' %}">
+    <link rel="stylesheet" href="{% static 'css/board/board.css'%}">
+</head>
+<body>
+    <header>
+        <div class="nav-bar">
+            <div class="nav-container">
+                <div class="nav-img">
+                    <img src="{% static 'header/blog_img_white.svg' %}" alt="">
+                </div>
+                <div class="nav-topics">
+                    <a href="">일상</a>
+                    <a href="">요리</a>
+                    <a href="">여행</a>
+                    <a href="">영화</a>
+                    <a href="">IT</a>
+                </div> 
+                <div class="nav-buttons">
+                    <button class='logout-button'>
+                        log-out
+                    </button>
+                    <button class='primary-button'>
+                        Write Now
+                    </button>
+                </div> 
+            </div>
+        </div>
+    </header>
+    {% block contents %}
+    {% endblock %}
+    
+</body>
+</html>
