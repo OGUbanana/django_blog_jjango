@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     var tempBtn = document.getElementById('temporary-btn');
-    var maxContentLength = 40;
+    var maxContentLength = 160;
     var dateOptions = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 
     if (tempBtn) { 
@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     for (let post of data) {
                         let date = new Date(post.post_created_at);
                         let formattedDate = new Intl.DateTimeFormat('ko-KR', dateOptions).format(date);
-                        let PTags = post.post_content.replace(/<\/?p[^>]*>/g, "");
+                        let ImgTags = post.post_content.replace(/<img[^>]*>/g, "");
+                        let PTags = ImgTags.replace(/<\/?p[^>]*>/g, "");
                         let maxContent = PTags.length > maxContentLength ? PTags.substring(0, maxContentLength) + '...' : PTags;
                         let html = '';
                         html += '<div class="temp-post" data-id="' + post.post_id + '">';
