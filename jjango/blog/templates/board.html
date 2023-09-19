@@ -1,12 +1,17 @@
+{% extends "base_light.html" %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/board/board.css'%}">
+    {% endblock %}
     <title>게시글 확인</title>
 </head>
 <body>
-    {% extends "base_light.html" %}
+
     {% block contents %}
     <section class='container'>
         <div class="box-divider">

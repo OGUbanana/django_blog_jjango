@@ -96,3 +96,19 @@ a:link {
   transition: transform 0.8s, background-color 0.3s;
   color: #1e1e1e;
 }
+
+.footer {
+  display: flex;
+  background-color: #E7E3DA;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.footer p {
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
