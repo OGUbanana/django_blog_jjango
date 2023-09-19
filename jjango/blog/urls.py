@@ -17,7 +17,6 @@ router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('', views.index, name="index"),
-    path('<str:topic>', views.index, name='index_topic'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthForm), name='login'),
      path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('board/', views.board, name="board"),
@@ -27,7 +26,7 @@ urlpatterns = [
      path('edit_post/<int:post_id>', views.create_post, name='create_post'),
      path('update_post/<int:post_id>', views.update_post, name='update_post'),
      
-     # 토픽별 분류 - 아직 진행중(23.09.14)
+
     path('post_list/<str:post_topic>/', views.index, name='post_topic'),
     
     #댓글
