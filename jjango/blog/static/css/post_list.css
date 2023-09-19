@@ -10,6 +10,7 @@
 
 body {
     background-color: #f9f8f4;
+    height: 100%;
 }
 
 h3 {
@@ -138,11 +139,12 @@ a {
 /* 하단박스 */
 .post-box {
     display: block;
-    padding: 20px 0px;
+    padding: 20px 0px 130px 0px;
 }
 
 .container {
     width: 100%;
+    height: 100%;
     max-width: 1230px;
     grid-template-columns: repeat(3, 1fr);
     margin: auto;
@@ -186,19 +188,6 @@ a {
     margin-bottom: 8px;
 }
 
-
-
-
-
-
-/* 
-.sub-info {
-    color: #7c7c7c;
-    display: flex;
-    gap: 20px;
-    font-size: 15px;
-} */
-
 .card-thumbnail-img {
     width: 100%;
     height: 220px;
@@ -215,3 +204,4 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
