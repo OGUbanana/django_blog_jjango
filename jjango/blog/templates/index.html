@@ -36,7 +36,7 @@
               <div class="card-thumbnail-img">
                 {% if post.post_content|get_img_src %}
                 <a href="{% url 'blog:post_detail' post.pk %}">
-                  <img src="{{ post.post_content|get_img_src }}" alt="Thumbnail image"/>
+                  <img src="{{ post.post_content|get_img_src }}" alt="Thumbnail image" style="width: 100%; height: 200px;"/>
                 </a>
                 {% else %}
                 <div style="width: 100%; height: 100%; background-color: transparent"></div>
