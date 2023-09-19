@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/reset.css'%}">
+    <link rel="stylesheet" href="{% static 'css/header/header_light.css' %}">
+    <link rel="stylesheet" href="{% static 'css/board/board.css'%}">
+    {% block extra_css %}
+    {% endblock %}
+</head>
+
+
+<body>
+    <header>
+        <div class="nav-bar">
+            <div class="nav-container">
+                <div class="nav-img">
+                    <img src="{% static 'header/blog_img_black.svg' %}" alt="" onclick="location.href='{%url 'blog:index'%}'">
+                </div>
+                <div class="nav-toolbar">
+                    <div class="nav-topics">
+                        <a href="{% url 'blog:post_topic' post_topic='일상' %}">일상</a>
+                        <a href="{% url 'blog:post_topic' post_topic='요리' %}">요리</a>
+                        <a href="{% url 'blog:post_topic' post_topic='여행' %}">여행</a>
+                        <a href="{% url 'blog:post_topic' post_topic='영화' %}">영화</a>
+                        <a href="{% url 'blog:post_topic' post_topic='IT' %}">IT</a>
+                    </div> 
+                    <div class="nav-buttons">
+                        {% if user.is_authenticated %}
+                        <a class="logout-button" href="{% url 'blog:logout' %}">Logout</a>
+                        <a  class='primary-button' href="{% url 'blog:create_post' %}">Write Now</a>
+                        {% else %}
+                        <a  class='primary-button' href="{% url 'blog:login' %}">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block contents %}
+    {% endblock %}
+    <footer class ="footer">
+        <p>&copy; 2023 jjango Blog. All rights reserved.</p>
+    </footer>
+</body>
+</html>
