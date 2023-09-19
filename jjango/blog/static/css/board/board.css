@@ -216,13 +216,18 @@ a {
 
 .another-post-box {
     display: flex;
-    justify-content: space-between;
 }
 
 .another-post-box p {
     font-size: 14px;
     opacity: 0.5;
 }
+
+.another-post-box p:last-child {
+    width: 240px;
+    text-align: right;
+}
+
 
 .post-name {
     width: 730px;
