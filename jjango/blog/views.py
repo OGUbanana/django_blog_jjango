@@ -246,4 +246,3 @@ def delete_comment(request, comment_id):
         comment.delete()
     return redirect('board', post_id=comment.post_id)
 
-

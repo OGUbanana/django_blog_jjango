@@ -26,7 +26,9 @@
                 <div class="post-info">
                 {% for post in sub_posts %}
                    <div class="recommend-box">
-                        <img src="{{post.post_image}}" alt="">
+                        {% if post.post_image %}
+                            <img src="{{post.post_image}}" alt="">
+                        {% endif %}
                         <p>{{post.post_title}}</p>
                    </div> 
                 {% endfor %}

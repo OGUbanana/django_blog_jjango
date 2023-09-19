@@ -53,7 +53,8 @@
                 <div class="box">
                     <h4 class="title" name="title" alt="">UPLOAD INFO</h4>
                     <p>공개여부: {% if edit_mode %}전체공개{% else %}미공개{% endif %}</p>
-                    <p>{{form.post_image}}</p>
+                    <p class="" name="" alt="">상태 : </p>
+                    <button onclick='CKEDITOR.tools.callFunction(39,this);return false;'>이미지업로드</button>
                     <div class="submit-box">
                         {% if edit_mode %}
                         <button type="submit" name="delete-button" class="delete-button" value="삭제">삭제</button>
