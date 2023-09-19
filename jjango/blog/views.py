@@ -66,7 +66,7 @@ def index(request, post_topic=None):
 
 
 
-def board(request,post_id):
+def board(request,post_id=None):
     post = Post.objects.get(pk=post_id)
     if request.method == 'POST': 
         if 'delete-button' in request.POST:
@@ -188,12 +188,20 @@ def create_post(request, post_id=None):
               }
         form = BlogPost(initial=initial_data)
 
-    return render(request, 'write.html', {'post': post, 'form': form, 'edit_mode': post_id is not None,'temporary_cnt':temporary_cnt})
+    return render(request, 'write.html', {'post': post, 'form': form, 'edit_mode': post_id is not None,'temporary_cnt':temporary_cnt, 'post_id':post_id})
 
 
-
-
-
+# 게시글 수정
+@login_required(login_url='blog:login')
+def update_post(request, post_id=None):
+    if request.method == 'POST':
+        post = Post.objects.filter(post_id=post_id).update(
+            post_title=request.POST['post_title'],
+            post_content=request.POST['post_content'],
+            post_topic=request.POST['post_topic'],         
+        )
+        return redirect('blog:post_detail', post_id=post_id)
+    return redirect('blog:index')
 
 #댓글 등록
 @login_required(login_url='blog:login')
