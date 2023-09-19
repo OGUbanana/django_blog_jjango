@@ -22,19 +22,11 @@
                 </div>
                 <div class="nav-toolbar">
                     <div class="nav-topics">
-                        <a href="{% url 'blog:index_topic' topic="일상" %}">일상</a>
-                        <a href="{% url 'blog:index_topic' topic="요리" %}">요리</a>
-                        <a href="{% url 'blog:index_topic' topic="여행" %}">여행</a>
-                        <a href="{% url 'blog:index_topic' topic="영화" %}">영화</a>
-                        <a href="{% url 'blog:index_topic' topic="IT" %}">IT</a>
-                        {% comment %}
-                        # 아직 진행중(23.09.14) -> url 경로부분
-                        <a href="{% url 'blog:topic_post' topic='일상' %}">일상</a>
-                        <a href="{% url 'blog:topic_post' topic='요리' %}">요리</a>
-                        <a href="{% url 'blog:topic_post' topic='여행' %}">여행</a>
-                        <a href="{% url 'blog:topic_post' topic='영화' %}">영화</a>
-                        <a href="{% url 'blog:topic_post' topic='IT' %}">IT</a>
-                        {% endcomment %}
+                        <a href="{% url 'blog:post_topic' post_topic='일상' %}">일상</a>
+                        <a href="{% url 'blog:post_topic' post_topic='요리' %}">요리</a>
+                        <a href="{% url 'blog:post_topic' post_topic='여행' %}">여행</a>
+                        <a href="{% url 'blog:post_topic' post_topic='영화' %}">영화</a>
+                        <a href="{% url 'blog:post_topic' post_topic='IT' %}">IT</a>
                     </div> 
                     <div class="nav-buttons">
                         {% if user.is_authenticated %}

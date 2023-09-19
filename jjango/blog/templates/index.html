@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_filter %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -12,42 +13,42 @@
 </head>
 <body>
     {% block contents %}
+    
     <section class="first-post-box">
-        {% if latest_post %}
             <div class="container">
+                {% for post in posts %} {% if forloop.first %}
                 <div class="post-info-box">
-                    <h3 class= "title">{{ latest_post.post_title }}</h3>
-                    <p class = "content">{{ latest_post.post_content }}</p>
-                    {% comment %} <button onclick="location.href='{% url 'blog:post_detail' post_id=latest_post.pk %}'" class="Read_More">Read More</button> {% endcomment %}
-                    <button onclick="location.href='{% url 'blog:post_detail' post_id=latest_post.pk %}'" class="Read_More">Read More</button>
+                  <h3>{{ post.post_title }}</h3>
+                  <p>{{ post.post_content|text_only }}</p>
+                    <button onclick="location.href='{% url 'blog:post_detail' post_id=post.pk %}'" class="Read_More">Read More</button>
                 </div>
-                {% if latest_post.image %}
-                    <img class="thumbnail-img" src="{{latest_post.post_image.url}}" alt="Latest_Post_Image">
-                {% endif %}
+                <div class="thumbnail-img">
+                    <img src="{{ post.post_content|get_img_src }}" alt="" />
+                  </div>
             </div>
-
-         {% else %}
-             <p>최근 포스트가 없습니다.</p>
-         {% endif %}
+    {% endif %} {% endfor %}
     </section>
 
     <section class="post-box">
         <div class="container">
-            {% for post in posts %}
-            <article class="card" onclick="location.href='board/{{post.post_id}}'">
-                {% if post.image %}
-                    <img class="card-thumbnail-img" src="{{ post.image.url }}" alt="Post_Image">
+            {% for post in posts %} {% if not forloop.first %}
+            <div class="card">
+              <div class="card-thumbnail-img">
+                {% if post.post_content|get_img_src %}
+                <img src="{{ post.post_content|get_img_src }}" alt="Thumbnail image" />
+                {% else %}
+                <div style="width: 100%; height: 100%; background-color: transparent"></div>
                 {% endif %}
+              </div>
+              <a href="{% url 'blog:post_detail' post.pk %}" class="post-info-box-link">
                 <div class="card-info-box">
-                    <p>{{ post.post_created_at }}</p>
-                    <h3>{{ post.post_title }}</h3>
-                    <p>{{ post.post_content }}</p>
+                  <p>{{ post.post_created_at }}</p>
+                  <h3>{{ post.post_title }}</h3>
+                  <p>{{ post.post_content|text_only }}</p>
                 </div>
-
-            </article>
-        {% endfor %}
-        </div>
-
+                </a>
+            </div>
+            {% endif %}{% endfor %}
     </section>
 </body>
 {% endblock %}

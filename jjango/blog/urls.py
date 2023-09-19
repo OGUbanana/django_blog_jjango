@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, PostViewSet, CommentViewSet
+from .views import PostViewSet, CommentViewSet
 from django.contrib.auth import views as auth_views
 from .forms import CustomAuthForm
 from django.conf.urls.static import static
@@ -11,7 +11,6 @@ app_name = "blog"
 
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
 router.register(r'posts', PostViewSet)
 router.register(r'comments', CommentViewSet)
 
@@ -22,18 +21,13 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html', authentication_form=CustomAuthForm), name='login'),
      path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('board/', views.board, name="board"),
-
-
     #게시글
     path('write/',
           views.create_post, name='create_post'),
-     path('post/modify/<int:post_id>/',
-          views.modify_post, name='modify_post'),
-     path('post/delete/<int:post_id>/',
-          views.delete_post, name='delete_post'),   
+     path('edit_post/<int:post_id>', views.create_post, name='create_post'),
 
      # 토픽별 분류 - 아직 진행중(23.09.14)
-     path('post_list/<strLtopic>/', views.topic_post, name='topic_post'),
+    path('post_list/<str:post_topic>/', views.index, name='post_topic'),
     
     #댓글
     path('comment/create/post/<int:post_id>/', views.create_comment, name='create_comment'),
@@ -42,7 +36,7 @@ urlpatterns = [
 
     path('api/', include(router.urls)),
     path('board/<int:post_id>/', views.board, name='post_detail')
-
+    
 
 ]
 
