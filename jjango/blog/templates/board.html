@@ -108,7 +108,14 @@
           // 알림 표시
           alert('포스트 링크가 클립보드에 복사되었습니다');
         });
+
+        // Post 이미지 리사이징
+        const post_img = document.querySelector('p img');
+        post_img.style.height = "40%";
+        post_img.style.width = "40%";
+
       </script>
     {% endblock %}
 </body>
 </html>
+
